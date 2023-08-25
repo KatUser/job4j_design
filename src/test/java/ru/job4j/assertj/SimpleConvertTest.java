@@ -43,6 +43,7 @@ class SimpleConvertTest {
                 .noneMatch(s -> s.contains("y"))
                 .anyMatch(s -> s.endsWith("ot"));
     }
+
     @Test
     void checkSet() {
         SimpleConvert simpleConvert = new SimpleConvert();
