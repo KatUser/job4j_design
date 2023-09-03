@@ -36,12 +36,13 @@ class MatrixItTest  {
     @Test
     void whenRowHasDiffSize() {
         int[][] input = {
-                {1}, {2, 3}, {}, {}, {4}
+                {1}, {2, 3, 5}, {}, {}, {4}
         };
         MatrixIt iterator = new MatrixIt(input);
         assertThat(iterator.next()).isEqualTo(1);
         assertThat(iterator.next()).isEqualTo(2);
         assertThat(iterator.next()).isEqualTo(3);
+        assertThat(iterator.next()).isEqualTo(5);
         assertThat(iterator.next()).isEqualTo(4);
         assertThat(iterator.hasNext()).isFalse();
     }
