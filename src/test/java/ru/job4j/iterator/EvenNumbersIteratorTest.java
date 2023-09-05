@@ -67,4 +67,22 @@ class EvenNumbersIteratorTest {
         assertThat(iterator.hasNext()).isFalse();
         assertThat(iterator.hasNext()).isFalse();
     }
+
+    @Test
+    void whenCallRemoveReceiveUOException() {
+        iterator = new EvenNumbersIterator(new int[] {2, 4, 6, 8});
+        assertThat(iterator.hasNext()).isTrue();
+        assertThat(iterator.next()).isEqualTo(2);
+        assertThatThrownBy(() -> iterator.remove())
+                .isInstanceOf(UnsupportedOperationException.class);
+    }
+
+    @Test
+    void whenCallForEachRemainingReceiveUOException() {
+        iterator = new EvenNumbersIterator(new int[]{2, 4, 6, 8});
+        assertThat(iterator.hasNext()).isTrue();
+        assertThat(iterator.next()).isEqualTo(2);
+        assertThatThrownBy(() -> iterator.forEachRemaining(System.out::println)).
+                isInstanceOf(UnsupportedOperationException.class);
+    }
 }
