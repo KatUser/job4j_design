@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 public class EvenNumbersIterator implements Iterator<Integer> {
 
     private int[] data;
+
     private int index;
 
     public EvenNumbersIterator(int[] data) {
@@ -43,5 +44,4 @@ public class EvenNumbersIterator implements Iterator<Integer> {
      public void forEachRemaining(Consumer<? super Integer> action) {
          throw new UnsupportedOperationException();
      }
-
 }
