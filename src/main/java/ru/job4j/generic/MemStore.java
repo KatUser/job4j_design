@@ -5,6 +5,7 @@ import java.util.Map;
 
 public final class MemStore<T extends Base> implements Store<T> {
 
+    /* Хранить данные мы будем в Map:*/
     private final Map<String, T> storage = new HashMap<>();
 
     @Override
