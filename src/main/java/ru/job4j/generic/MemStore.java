@@ -5,26 +5,32 @@ import java.util.Map;
 
 public final class MemStore<T extends Base> implements Store<T> {
 
-    /* Хранить данные мы будем в Map:*/
     private final Map<String, T> storage = new HashMap<>();
 
     @Override
     public void add(T model) {
-
+        if (!storage.containsKey(model.getId())) {
+            storage.put(model.getId(), model);
+        }
     }
 
     @Override
     public boolean replace(String id, T model) {
-        return false;
+        boolean res = false;
+        if (storage.containsKey(id)) {
+            storage.put(id, model);
+            res = true;
+        }
+        return res;
     }
 
     @Override
     public void delete(String id) {
-
+        storage.remove(id);
     }
 
     @Override
     public T findById(String id) {
-        return null;
+        return storage.get(id);
     }
 }
