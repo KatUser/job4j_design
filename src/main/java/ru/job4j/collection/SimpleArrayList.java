@@ -24,9 +24,7 @@ public class SimpleArrayList<T> implements SimpleList<T> {
 
     @Override /* Replaces the element at the specified position in this list with the specified element.*/
     public T set(int index, T newValue) {
-        if (!(Objects.checkIndex(index, size) == index)) {
-            throw new IndexOutOfBoundsException();
-        }
+        Objects.checkIndex(index, size);
         T previousIndexValue = container[index];
         container[index] = newValue;
         return previousIndexValue;
@@ -34,9 +32,7 @@ public class SimpleArrayList<T> implements SimpleList<T> {
 
     @Override /* Returns: the element that was removed from the list */
     public T remove(int index) {
-        if (!(Objects.checkIndex(index, size) == index)) {
-            throw new IndexOutOfBoundsException();
-        }
+        Objects.checkIndex(index, size);
         T previousIndexValue = container[index];
         System.arraycopy(
                 container, index + 1, container,
@@ -50,10 +46,8 @@ public class SimpleArrayList<T> implements SimpleList<T> {
 
     @Override /* Returns the element at the specified position in this list. */
     public T get(int index) {
-        if (!(Objects.checkIndex(index, size) == index)) {
-            throw new IndexOutOfBoundsException();
-        }
-        return container[index];
+        Objects.checkIndex(index, size);
+            return container[index];
     }
 
     @Override /* Returns the number of elements in this list.*/
