@@ -24,42 +24,36 @@ public class SimpleArrayList<T> implements SimpleList<T> {
 
     @Override /* Replaces the element at the specified position in this list with the specified element.*/
     public T set(int index, T newValue) {
-        T previousIndexValue = container[index];
-        if (Objects.checkIndex(index, size) == index) {
-            container[index] = newValue;
-        } else {
+        if (!(Objects.checkIndex(index, size) == index)) {
             throw new IndexOutOfBoundsException();
         }
+        T previousIndexValue = container[index];
+        container[index] = newValue;
         return previousIndexValue;
     }
 
     @Override /* Returns: the element that was removed from the list */
     public T remove(int index) {
-        if (Objects.checkIndex(index, size) == index) {
-            T previousIndexValue = container[index];
-            System.arraycopy(
-                    container,
-                    index + 1,
-                    container,
-                    index,
-                    container.length - index - 1
-            );
-            container[container.length - 1] = null;
-            modCount++;
-            size--;
-            return previousIndexValue;
-        } else {
+        if (!(Objects.checkIndex(index, size) == index)) {
             throw new IndexOutOfBoundsException();
         }
+        T previousIndexValue = container[index];
+        System.arraycopy(
+                container, index + 1, container,
+                index, container.length - index - 1
+        );
+        container[container.length - 1] = null;
+        modCount++;
+        size--;
+        return previousIndexValue;
     }
 
     @Override /* Returns the element at the specified position in this list. */
     public T get(int index) {
-        if (Objects.checkIndex(index, size) == index) {
-            return container[index];
-        } else {
+        if (!(Objects.checkIndex(index, size) == index)) {
             throw new IndexOutOfBoundsException();
         }
+        return container[index];
     }
 
     @Override /* Returns the number of elements in this list.*/
