@@ -15,25 +15,21 @@ public class SimpleArrayList<T> implements SimpleList<T> {
     public void add(T value) {
         if (container.length == size) {
             expand();
-            container[size + 1] = value;
         }
-        container[size] = value;
-        size++;
+        container[size++] = value;
         modCount++;
     }
 
     @Override /* Replaces the element at the specified position in this list with the specified element.*/
     public T set(int index, T newValue) {
-        Objects.checkIndex(index, size);
-        T previousIndexValue = container[index];
+        T previousIndexValue = get(index);
         container[index] = newValue;
         return previousIndexValue;
     }
 
     @Override /* Returns: the element that was removed from the list */
     public T remove(int index) {
-        Objects.checkIndex(index, size);
-        T previousIndexValue = container[index];
+        T previousIndexValue = get(index);
         System.arraycopy(
                 container, index + 1, container,
                 index, container.length - index - 1
@@ -47,7 +43,7 @@ public class SimpleArrayList<T> implements SimpleList<T> {
     @Override /* Returns the element at the specified position in this list. */
     public T get(int index) {
         Objects.checkIndex(index, size);
-            return container[index];
+        return container[index];
     }
 
     @Override /* Returns the number of elements in this list.*/
@@ -58,8 +54,9 @@ public class SimpleArrayList<T> implements SimpleList<T> {
     private void expand() {
         if (container.length == 0) {
             container = Arrays.copyOf(container, 1);
+        } else {
+            container = Arrays.copyOf(container, container.length * 2);
         }
-        container = Arrays.copyOf(container, container.length * 2);
     }
 
     @Override
