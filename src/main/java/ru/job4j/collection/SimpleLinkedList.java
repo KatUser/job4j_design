@@ -4,8 +4,8 @@ import java.util.*;
 
 public class SimpleLinkedList<E> implements SimpleLinked<E> {
 
-    private int size = 0;
-    private int modCount = 0;
+    private int size;
+    private int modCount;
     private Node<E> head;
 
     /* Appends the specified element to the end of this list.*/
