@@ -5,8 +5,6 @@ import java.util.NoSuchElementException;
 public class SimpleQueue<T> {
     private final SimpleStack<T> in = new SimpleStack<>();
     private final SimpleStack<T> out = new SimpleStack<>();
-    /*Метод poll() - возвращает первое значение и удаляет его из коллекции.*/
-    /*Метод push(T value) - помещает значение в конец.*/
     private int countIn;
     private int countOut;
 
