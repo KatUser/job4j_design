@@ -40,6 +40,12 @@ class ListUtilsTest {
     }
 
     @Test
+    void whenAddAfterLast() {
+        ListUtils.addAfter(input, 1, 4);
+        assertThat(input).hasSize(3).containsSequence(1, 3, 4);
+    }
+
+    @Test
     void whenRemoveIfEven() {
         input = new ArrayList<>(Arrays.asList(2, 4));
         ListUtils.removeIf(input, s -> s % 2 == 0);
