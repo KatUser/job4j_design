@@ -1,9 +1,10 @@
 package ru.job4j.set;
 
 import org.junit.jupiter.api.Test;
-import ru.job4j.collection.SimpleArrayList;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.NoSuchElementException;
+
+import static org.assertj.core.api.Assertions.*;
 
 class SimpleArraySetTest {
 
@@ -41,16 +42,28 @@ class SimpleArraySetTest {
     }
 
     @Test
-    void whenContainsWhatHasBeenAdded() {
+    void whenCheckIteratorWithOneElement() {
         SimpleSet<Integer> set = new SimpleArraySet<>();
-        assertThat(set.add(0)).isTrue();
-        assertThat(set.contains(0)).isTrue();
+        set.add(0);
+        assertThat(set.iterator().hasNext()).isTrue();
+        assertThat(set.iterator().next()).isEqualTo(0);
     }
 
     @Test
-    void whenAddOneElementAndSizeIsOne() {
-        SimpleArrayList<Integer> set = new SimpleArrayList<>(0);
-        set.add(0);
-        assertThat(set.size()).isEqualTo(1);
+    void whenCheckIteratorWithNoElements() {
+        SimpleSet<String> set = new SimpleArraySet<>();
+        assertThat(set.iterator().hasNext()).isFalse();
+        assertThatThrownBy(() -> set.iterator().next())
+                .isInstanceOf(NoSuchElementException.class);
+    }
+
+    @Test
+    void whenCheckThatElementIsOfParticularInstance() {
+        SimpleSet<String> stringSet = new SimpleArraySet<>();
+        stringSet.add("One");
+        assertThat(stringSet.iterator().next()).isInstanceOf(String.class);
+        SimpleSet<Integer> integerSet = new SimpleArraySet<>();
+        integerSet.add(1);
+        assertThat(integerSet.iterator().next()).isInstanceOf(Integer.class);
     }
 }
