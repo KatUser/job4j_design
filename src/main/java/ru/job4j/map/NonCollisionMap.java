@@ -3,6 +3,7 @@ package ru.job4j.map;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class NonCollisionMap<K, V> implements SimpleMap<K, V> {
     private static final float LOAD_FACTOR = 0.75f;
@@ -13,7 +14,16 @@ public class NonCollisionMap<K, V> implements SimpleMap<K, V> {
 
     @Override
     public boolean put(K key, V value) {
-        return false;
+        int h = hash(Objects.hashCode(key));
+        int i = indexFor(h);
+        boolean result = table[i] == null;
+        if (result) {
+            table[i].key = key;
+            table[i].value = value;
+            count++;
+            modCount++;
+        }
+        return result;
     }
 
     private int hash(int hashCode) {
@@ -30,7 +40,16 @@ public class NonCollisionMap<K, V> implements SimpleMap<K, V> {
 
     @Override
     public V get(K key) {
-        return null;
+        V result = null;
+        int hk = Objects.hashCode(key);
+        int i = indexFor(hash(hk));
+        if (table[i] != null) {
+            if (Objects.hashCode(key) == Objects.hashCode(table[i])
+                    && Objects.equals(table[i].key, key)) {
+                result = table[i].value;
+            }
+        }
+        return result;
     }
 
     @Override
