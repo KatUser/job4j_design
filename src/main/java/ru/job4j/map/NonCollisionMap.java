@@ -54,13 +54,24 @@ public class NonCollisionMap<K, V> implements SimpleMap<K, V> {
 
     @Override
     public boolean remove(K key) {
-        return false;
+        boolean result = false;
+        int hk = Objects.hashCode(key);
+        int i = indexFor(hash(hk));
+        if (table[i] != null) {
+            if (Objects.hashCode(key) == Objects.hashCode(table[i])
+                    && Objects.equals(table[i].key, key)) {
+                table[i] = null;
+                result = true;
+            }
+        }
+        return result;
     }
 
     @Override
     public Iterator<K> iterator() {
         return new Iterator<K>() {
             int iterIndex = 0;
+
             @Override
             public boolean hasNext() {
                 while (iterIndex < table.length && table[iterIndex] == null) {
