@@ -1,6 +1,5 @@
 package ru.job4j.map;
 
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -18,8 +17,7 @@ public class NonCollisionMap<K, V> implements SimpleMap<K, V> {
         int i = indexFor(h);
         boolean result = table[i] == null;
         if (result) {
-            table[i].key = key;
-            table[i].value = value;
+            table[i] = new MapEntry<>(key, value);
             count++;
             modCount++;
         }
@@ -44,7 +42,7 @@ public class NonCollisionMap<K, V> implements SimpleMap<K, V> {
         int hk = Objects.hashCode(key);
         int i = indexFor(hash(hk));
         if (table[i] != null) {
-            if (Objects.hashCode(key) == Objects.hashCode(table[i])
+            if (Objects.equals(hk, table[i].key.hashCode())
                     && Objects.equals(table[i].key, key)) {
                 result = table[i].value;
             }
@@ -58,12 +56,14 @@ public class NonCollisionMap<K, V> implements SimpleMap<K, V> {
         int hk = Objects.hashCode(key);
         int i = indexFor(hash(hk));
         if (table[i] != null) {
-            if (Objects.hashCode(key) == Objects.hashCode(table[i])
+            if (Objects.equals(hk, table[i].key.hashCode())
                     && Objects.equals(table[i].key, key)) {
                 table[i] = null;
                 result = true;
             }
         }
+        count--;
+        modCount++;
         return result;
     }
 
