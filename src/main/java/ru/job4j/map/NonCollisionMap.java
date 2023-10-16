@@ -1,5 +1,6 @@
 package ru.job4j.map;
 
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -42,7 +43,7 @@ public class NonCollisionMap<K, V> implements SimpleMap<K, V> {
         int hk = Objects.hashCode(key);
         int i = indexFor(hash(hk));
         if (table[i] != null) {
-            if (Objects.equals(hk, table[i].key.hashCode())
+            if (Objects.equals(hk, Objects.hashCode(table[i].key))
                     && Objects.equals(table[i].key, key)) {
                 result = table[i].value;
             }
@@ -56,7 +57,7 @@ public class NonCollisionMap<K, V> implements SimpleMap<K, V> {
         int hk = Objects.hashCode(key);
         int i = indexFor(hash(hk));
         if (table[i] != null) {
-            if (Objects.equals(hk, table[i].key.hashCode())
+            if (Objects.equals(hk, Objects.hashCode(table[i].key))
                     && Objects.equals(table[i].key, key)) {
                 table[i] = null;
                 result = true;
@@ -71,9 +72,13 @@ public class NonCollisionMap<K, V> implements SimpleMap<K, V> {
     public Iterator<K> iterator() {
         return new Iterator<K>() {
             int iterIndex = 0;
+            final int expectedModCount = modCount;
 
             @Override
             public boolean hasNext() {
+                if (expectedModCount != modCount) {
+                    throw new ConcurrentModificationException();
+                }
                 while (iterIndex < table.length && table[iterIndex] == null) {
                     iterIndex++;
                 }
