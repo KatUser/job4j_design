@@ -17,6 +17,9 @@ public class NonCollisionMap<K, V> implements SimpleMap<K, V> {
         int h = hash(Objects.hashCode(key));
         int i = indexFor(h);
         boolean result = table[i] == null;
+        if (count == table.length) {
+            expand();
+        }
         if (result) {
             table[i] = new MapEntry<>(key, value);
             count++;
@@ -34,7 +37,18 @@ public class NonCollisionMap<K, V> implements SimpleMap<K, V> {
     }
 
     private void expand() {
-
+        MapEntry<K, V>[] newTable = new MapEntry[capacity * 2];
+        //MapEntry[] newTable = new MapEntry[capacity * 2];
+        //MapEntry<K, V>[] table = new MapEntry[capacity];
+        //newTable.length = table.length * 2;
+        for (MapEntry<K, V> kvMapEntry : table) {
+            if (kvMapEntry != null) {
+                int h = hash(Objects.hashCode(kvMapEntry.key));
+                int innerIndex = indexFor(h);
+                newTable[innerIndex] = new MapEntry<>(kvMapEntry.key, kvMapEntry.value);
+            }
+        }
+        table = newTable;
     }
 
     @Override
