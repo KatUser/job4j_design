@@ -150,4 +150,26 @@ class NonCollisionMapTest {
         assertThat(map.put(0, "0")).isTrue();
         assertThat(map.get(null)).isNull();
     }
+
+    @Test
+    void whenRemoveAllAndSizeIsZero() {
+        map.remove(1);
+        map.remove(2);
+        map.remove(3);
+        map.remove(4);
+        assertThat(map).hasSize(0);
+    }
+
+    @Test
+    void whenGetFalse() {
+        assertThat(map.get(10)).isNull();
+    }
+
+    @Test
+    void whenNextThrowsException() {
+        SimpleMap<Integer, String> emptyMap = new NonCollisionMap<>();
+        Iterator<Integer> it = emptyMap.iterator();
+        assertThatThrownBy(it::next)
+                .isInstanceOf(NoSuchElementException.class);
+    }
 }
