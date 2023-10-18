@@ -18,7 +18,7 @@ public class NonCollisionMap<K, V> implements SimpleMap<K, V> {
             expand();
         }
         int h = hash(Objects.hashCode(key));
-        int i = indexFor(h);
+        int i = getBucketNumber(h);
         boolean result = table[i] == null;
         if (result) {
             table[i] = new MapEntry<>(key, value);
@@ -41,7 +41,7 @@ public class NonCollisionMap<K, V> implements SimpleMap<K, V> {
         for (MapEntry<K, V> entry : table) {
             if (entry != null) {
                 int h = hash(Objects.hashCode(entry.key));
-                int newTableIndex = indexFor(h);
+                int newTableIndex = getBucketNumber(h);
                 newTable[newTableIndex] = new MapEntry<>(entry.key, entry.value);
             }
         }
@@ -52,10 +52,9 @@ public class NonCollisionMap<K, V> implements SimpleMap<K, V> {
     public V get(K key) {
         V result = null;
         int hk = Objects.hashCode(key);
-        int i = indexFor(hash(hk));
+        int i = getBucketNumber(hash(hk));
         if (table[i] != null) {
-            if (hk == Objects.hashCode(table[i].key)
-                    && Objects.equals(table[i].key, key)) {
+            if (compareKeys(hk, key, i)) {
                 result = table[i].value;
             }
         }
@@ -66,10 +65,9 @@ public class NonCollisionMap<K, V> implements SimpleMap<K, V> {
     public boolean remove(K key) {
         boolean result = false;
         int hk = Objects.hashCode(key);
-        int i = indexFor(hash(hk));
+        int i = getBucketNumber(hash(hk));
         if (table[i] != null) {
-            if (hk == Objects.hashCode(table[i].key)
-                    && Objects.equals(table[i].key, key)) {
+            if (compareKeys(hk, key, i)) {
                 table[i] = null;
                 result = true;
             }
@@ -77,6 +75,15 @@ public class NonCollisionMap<K, V> implements SimpleMap<K, V> {
         count--;
         modCount++;
         return result;
+    }
+
+    private int getBucketNumber(int h) {
+        return indexFor(h);
+    }
+
+    private boolean compareKeys(int hk, K key, int i) {
+        return hk == Objects.hashCode(table[i].key)
+                && Objects.equals(table[i].key, key);
     }
 
     @Override
