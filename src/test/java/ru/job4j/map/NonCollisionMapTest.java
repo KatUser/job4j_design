@@ -166,10 +166,22 @@ class NonCollisionMapTest {
     }
 
     @Test
-    void whenNextThrowsException() {
+    void whenIteratorIsEmptyNextThrowsException() {
         SimpleMap<Integer, String> emptyMap = new NonCollisionMap<>();
         Iterator<Integer> it = emptyMap.iterator();
         assertThatThrownBy(it::next)
                 .isInstanceOf(NoSuchElementException.class);
+    }
+
+    @Test
+    void whenCheckValueInstance() {
+        assertThat(map.get(1)).isInstanceOf(String.class);
+    }
+
+    @Test
+    void whenRemoveAndGetTrueAndFalseAfter() {
+        assertThat(map.remove(1)).isTrue();
+        assertThat(map.remove(1)).isFalse();
+        assertThat(map.remove(1)).isInstanceOf(Boolean.class);
     }
 }
