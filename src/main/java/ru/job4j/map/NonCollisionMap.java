@@ -51,7 +51,7 @@ public class NonCollisionMap<K, V> implements SimpleMap<K, V> {
     @Override
     public V get(K key) {
         V result = null;
-        int hk = Objects.hashCode(key);
+        int hk = getObjectHashCode(key);
         int i = getBucketNumber(hash(hk));
         if (table[i] != null) {
             if (compareKeys(hk, key, i)) {
@@ -64,7 +64,7 @@ public class NonCollisionMap<K, V> implements SimpleMap<K, V> {
     @Override
     public boolean remove(K key) {
         boolean result = false;
-        int hk = Objects.hashCode(key);
+        int hk = getObjectHashCode(key);
         int i = getBucketNumber(hash(hk));
         if (table[i] != null) {
             if (compareKeys(hk, key, i)) {
@@ -79,6 +79,10 @@ public class NonCollisionMap<K, V> implements SimpleMap<K, V> {
 
     private int getBucketNumber(int h) {
         return indexFor(h);
+    }
+
+    private int getObjectHashCode(K key) {
+        return Objects.hashCode(key);
     }
 
     private boolean compareKeys(int hk, K key, int i) {
