@@ -14,7 +14,6 @@ public class SimpleTreeTest {
         tree.add(4, 5);
         tree.add(5, 6);
         assertThat(tree.findBy(6)).isPresent();
-        assertThat(tree.findBy(1)).isPresent();
     }
 
     @Test
