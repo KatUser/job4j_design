@@ -38,12 +38,4 @@ public class SimpleTree<E> implements Tree<E> {
         }
         return rsl;
     }
-
-    @Override
-    public String toString() {
-        return "SimpleTree{"
-                + "root=" + root
-                + "children= " + root.children
-                + '}';
-    }
 }
