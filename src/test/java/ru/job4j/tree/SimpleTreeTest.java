@@ -1,7 +1,10 @@
 package ru.job4j.tree;
 
 import org.junit.jupiter.api.Test;
-import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.*;
 
 public class SimpleTreeTest {
 
@@ -24,7 +27,7 @@ public class SimpleTreeTest {
     }
 
     @Test
-    void whenChildExistOnLeafThenNotAdd() {
+    void whenChildExistsThenNotAdd() {
         Tree<Integer> tree = new SimpleTree<>(1);
         tree.add(1, 2);
         tree.add(1, 3);
@@ -32,5 +35,22 @@ public class SimpleTreeTest {
         tree.add(4, 5);
         tree.add(5, 6);
         assertThat(tree.add(2, 6)).isFalse();
+    }
+
+    @Test
+    void whenFindByIsPresent() {
+        Tree<Integer> tree = new SimpleTree<>(1);
+        tree.add(1, 2);
+        tree.add(1, 3);
+        tree.add(1, 4);
+        tree.add(4, 5);
+        tree.add(5, 6);
+        assertThat(tree.findBy(1)).isPresent();
+    }
+
+    @Test
+    void whenCheckInstance() {
+        Tree<Integer> tree = new SimpleTree<>(1);
+        assertThat(tree.findBy(1)).isInstanceOf(Optional.class);
     }
 }
