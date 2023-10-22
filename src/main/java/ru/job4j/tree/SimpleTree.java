@@ -13,6 +13,11 @@ public class SimpleTree<E> implements Tree<E> {
     public boolean add(E parent, E child) {
         boolean rsl = false;
         if (findBy(child).isEmpty()) {
+            Queue<Node<E>> data = new LinkedList<>();
+            data.offer(this.root);
+            Node<E> el = data.poll();
+            el.children.add(new Node<>(parent));
+            el.children.set(0, new Node<>(child));
             rsl = true;
             }
         return rsl;
@@ -32,5 +37,13 @@ public class SimpleTree<E> implements Tree<E> {
             data.addAll(el.children);
         }
         return rsl;
+    }
+
+    @Override
+    public String toString() {
+        return "SimpleTree{"
+                + "root=" + root
+                + "children= " + root.children
+                + '}';
     }
 }
