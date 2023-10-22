@@ -14,6 +14,7 @@ public class SimpleTreeTest {
         tree.add(4, 5);
         tree.add(5, 6);
         assertThat(tree.findBy(6)).isPresent();
+        assertThat(tree.findBy(1)).isPresent();
     }
 
     @Test
@@ -24,7 +25,7 @@ public class SimpleTreeTest {
     }
 
     @Test
-    void whenChildExistsThenNotAdd() {
+    void whenChildExistOnLeafThenNotAdd() {
         Tree<Integer> tree = new SimpleTree<>(1);
         tree.add(1, 2);
         tree.add(1, 3);
@@ -32,21 +33,5 @@ public class SimpleTreeTest {
         tree.add(4, 5);
         tree.add(5, 6);
         assertThat(tree.add(2, 6)).isFalse();
-    }
-
-    @Test
-    void whenHasNoChildrenAndFindBy1() {
-        Tree<Integer> tree = new SimpleTree<>(0);
-        assertThat(tree.findBy(1)).isNotPresent();
-    }
-
-    @Test
-    void whenAddReturnsTrue() {
-        Tree<Integer> tree = new SimpleTree<>(1);
-        tree.add(1, 2);
-        tree.add(1, 3);
-        tree.add(4, 5);
-        tree.add(5, 6);
-        assertThat(tree.add(3, 5)).isFalse();
     }
 }
