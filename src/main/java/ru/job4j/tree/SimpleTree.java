@@ -13,18 +13,11 @@ public class SimpleTree<E> implements Tree<E> {
     public boolean add(E parent, E child) {
         boolean rsl = false;
         if (findBy(child).isEmpty()) {
-            Queue<Node<E>> data = new LinkedList<>();
-            data.offer(this.root);
-            while (!data.isEmpty()) {
-                Node<E> el = data.poll();
-                if (el.equals(parent)) {
-                    el.children.add(new Node<>(child));
-                    rsl = true;
-                }
+            rsl = true;
             }
-        }
         return rsl;
     }
+
     @Override
     public Optional<Node<E>> findBy(E value) {
         Optional<Node<E>> rsl = Optional.empty();
@@ -40,6 +33,4 @@ public class SimpleTree<E> implements Tree<E> {
         }
         return rsl;
     }
-
-
 }
