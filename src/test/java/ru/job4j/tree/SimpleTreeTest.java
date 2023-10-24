@@ -55,7 +55,7 @@ public class SimpleTreeTest {
     }
 
     @Test
-    void whenTreeIsNotBinary() {
+    void whenTreeIsNotBinaryWithOneBranch() {
         Tree<Integer> tree = new SimpleTree<>(1);
         tree.add(1, 2);
         tree.add(1, 3);
@@ -64,10 +64,39 @@ public class SimpleTreeTest {
     }
 
     @Test
-    void whenTreeBinary() {
+    void whenTreeIsNotBinaryWithMoreThanOneBranch() {
+        Tree<Integer> tree = new SimpleTree<>(1);
+        tree.add(1, 2);
+        tree.add(1, 3);
+        tree.add(2, 4);
+        tree.add(2, 5);
+        tree.add(2, 0);
+        assertThat(tree.isBinary()).isFalse();
+    }
+
+    @Test
+    void whenTreeIsBinaryWithOneBranch() {
         Tree<Integer> tree = new SimpleTree<>(1);
         tree.add(1, 2);
         tree.add(1, 3);
         assertThat(tree.isBinary()).isTrue();
     }
+
+    @Test
+    void whenTreeIsBinaryWithMoreThanOneBranch() {
+        Tree<Integer> tree = new SimpleTree<>(1);
+        tree.add(1, 2);
+        tree.add(1, 3);
+        tree.add(2, 4);
+        tree.add(2, 5);
+        assertThat(tree.isBinary()).isTrue();
+    }
+
+    @Test
+    void whenTreeIsBinaryWithOneChild() {
+        Tree<Integer> tree = new SimpleTree<>(1);
+        tree.add(1, 2);
+        assertThat(tree.isBinary()).isTrue();
+    }
+
 }

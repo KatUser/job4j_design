@@ -7,18 +7,9 @@ import java.util.function.Predicate;
 
 public class SimpleTree<E> implements Tree<E> {
     private final Node<E> root;
+
     public SimpleTree(final E root) {
         this.root = new Node<>(root);
-    }
-
-    public boolean isBinary() {
-        boolean binaryTree = true;
-
-        Predicate<Node<E>> treeIsNotBinary  = n -> n.children.size() > 2;
-        if (findByPredicate(treeIsNotBinary).isPresent()) {
-            binaryTree = false;
-        }
-        return binaryTree;
     }
 
     private Optional<Node<E>> findByPredicate(Predicate<Node<E>> condition) {
@@ -35,6 +26,7 @@ public class SimpleTree<E> implements Tree<E> {
         }
         return rsl;
     }
+
     @Override
     public boolean add(E parent, E child) {
         boolean rsl = false;
@@ -48,20 +40,16 @@ public class SimpleTree<E> implements Tree<E> {
 
     @Override
     public Optional<Node<E>> findBy(E value) {
-        //Optional<Node<E>> rsl = Optional.empty();
-       // Queue<Node<E>> data = new LinkedList<>();
-     //   data.offer(this.root);
-        //Predicate<Node<E>> nodeValueEqualsBad  = n -> n.children.contains(value);
-       Predicate<Node<E>> nodeContainsValue  = n -> n.value == value;
-//        while (!data.isEmpty()) {
-//            Node<E> el = data.poll();
-//            if (el.value.equals(value)) {
-//                rsl = Optional.of(el);
-//                break;
-//            }
-//            data.addAll(el.children);
-//        }
-//        return rsl;
+        Predicate<Node<E>> nodeContainsValue = n -> n.value == value;
         return findByPredicate(nodeContainsValue);
+    }
+
+    public boolean isBinary() {
+        boolean binaryTree = true;
+        Predicate<Node<E>> treeIsNotBinary = n -> n.children.size() > 2;
+        if (findByPredicate(treeIsNotBinary).isPresent()) {
+            binaryTree = false;
+        }
+        return binaryTree;
     }
 }
