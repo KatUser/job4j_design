@@ -40,16 +40,11 @@ public class SimpleTree<E> implements Tree<E> {
 
     @Override
     public Optional<Node<E>> findBy(E value) {
-        Predicate<Node<E>> nodeContainsValue = n -> n.value == value;
-        return findByPredicate(nodeContainsValue);
+        return findByPredicate(n -> n.value == value);
     }
 
+    @Override
     public boolean isBinary() {
-        boolean binaryTree = true;
-        Predicate<Node<E>> treeIsNotBinary = n -> n.children.size() > 2;
-        if (findByPredicate(treeIsNotBinary).isPresent()) {
-            binaryTree = false;
-        }
-        return binaryTree;
+        return findByPredicate(n -> n.children.size() > 2).isEmpty();
     }
 }
