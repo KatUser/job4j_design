@@ -2,32 +2,27 @@ package ru.job4j.question;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class Analize {
-
     public static Info diff(Set<User> previous, Set<User> current) {
-        Info info = new Info(0, 0, 0);
-        Map<Integer, String> previousMap = new HashMap<>();
-        for (User user : previous) {
-            previousMap.put(user.getId(), user.getName());
+        int added = 0;
+        int changed = 0;
+        int removed;
+        Map<Integer, String> previousUsers = new HashMap<>();
+        for (User previousUser : previous) {
+            previousUsers.put(previousUser.getId(), previousUser.getName());
         }
-
-        for (Map.Entry<Integer, String> prevEntry : previousMap.entrySet()) {
-            if (current.stream().anyMatch(c -> Objects.equals(c.getId(), prevEntry.getKey())
-                    && !Objects.equals(c.getName(), prevEntry.getValue()))) {
-                info.setChanged(info.getChanged() + 1);
+        for (User currentUser : current) {
+            int currUserId = currentUser.getId();
+            if (!previousUsers.containsKey(currUserId)) {
+                added++;
+            } else if (!previousUsers.containsValue(currentUser.getName())) {
+                changed++;
             }
-            if (!current.stream().anyMatch(c -> Objects.equals(c.getId(), prevEntry.getKey()))) {
-                info.setDeleted(info.getDeleted() + 1);
-            }
+            previousUsers.remove(currUserId);
         }
-
-
-
-
-        return info;
+        removed = previousUsers.size();
+        return new Info(added, changed, removed);
     }
 }
