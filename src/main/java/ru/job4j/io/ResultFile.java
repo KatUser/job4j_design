@@ -7,6 +7,7 @@ public class ResultFile {
         try (FileOutputStream out = new FileOutputStream("data/dataresult.txt")) {
             out.write("Hello, Java!".getBytes());
             out.write(System.lineSeparator().getBytes());
+            out.write("Hello, Python!".getBytes());
         } catch (Exception e) {
             e.printStackTrace();
         }
