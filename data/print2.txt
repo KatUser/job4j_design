@@ -1,0 +1,2 @@
+From PrintStream into FileoutputStream
+New line
