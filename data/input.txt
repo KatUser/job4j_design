@@ -1,2 +1,2 @@
 From PrintStream into FileOutputStream
-You are psina !!!
+Busua is a cat =^_^=
