@@ -53,10 +53,15 @@ class ConfigTest {
         assertThat(config.value("key"))
                 .isEqualTo("value=");
     }
-
     @Test
     void whenFileContainsEqualOnly() {
         String path = "./data/test_when_file_contains_equal_only.properties";
+        Config config = new Config(path);
+        assertThatThrownBy(config::load).isInstanceOf(IllegalArgumentException.class);
+    }
+    @Test
+    void whenFileContainsNoEqual() {
+        String path = "./data/test_when_file_has_no_equal.properties";
         Config config = new Config(path);
         assertThatThrownBy(config::load).isInstanceOf(IllegalArgumentException.class);
     }
