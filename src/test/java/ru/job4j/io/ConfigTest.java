@@ -8,7 +8,7 @@ class ConfigTest {
 
     @Test
     void whenKeyIsOkAndValueIsOk() {
-        String path = "./data/test_key_value_ok.properties";
+        String path = "./data/test_when_key_value_ok.properties";
         Config config = new Config(path);
         config.load();
         assertThat(config.value("name"))
@@ -17,7 +17,7 @@ class ConfigTest {
 
     @Test
     void whenKeyIsOkAndValueIsNotOk() {
-        String path = "./data/test_key_ok_value_not_ok.properties";
+        String path = "./data/test_when_key_ok_value_not_ok.properties";
         Config config = new Config(path);
         assertThatThrownBy(config::load).isInstanceOf(IllegalArgumentException.class);
     }
@@ -38,7 +38,7 @@ class ConfigTest {
 
     @Test
     void whenLineContainsMoreThanOneEqualAndValueAfter() {
-        String path = "./data/when_key_value_with_extra_equal_and_value_after.properties";
+        String path = "./data/test_when_key_value_with_extra_equal_and_value_after.properties";
         Config config = new Config(path);
         config.load();
         assertThat(config.value("key"))
@@ -47,7 +47,7 @@ class ConfigTest {
 
     @Test
     void whenLineContainsMoreThanOneEqual() {
-        String path = "./data/when_key_value_with_extra_equal.properties";
+        String path = "./data/test_when_key_value_with_extra_equal.properties";
         Config config = new Config(path);
         config.load();
         assertThat(config.value("key"))

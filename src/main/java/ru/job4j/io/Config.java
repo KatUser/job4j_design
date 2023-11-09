@@ -47,6 +47,6 @@ public class Config {
 
     public static void main(String[] args) {
         System.out.println(new Config("data/app.properties"));
-        new Config("data/test_key_value_ok.properties").load();
+        new Config("data/test_when_key_value_ok.properties").load();
     }
 }
