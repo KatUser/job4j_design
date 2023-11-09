@@ -21,9 +21,13 @@ public class Config {
     public void load() {
         try (BufferedReader read = new BufferedReader(new FileReader(this.path))) {
             for (String line = read.readLine(); line != null; line = read.readLine()) {
-                String[] res = line.split("=");
-                values.put(res[0], res[1]);
-            }
+                String[] res = line.split("=", 2);
+                    if (res.length < 2 || res[0].isEmpty() || res[1].isEmpty()) {
+                        throw new IllegalArgumentException();
+                    } else {
+                        values.put(res[0], res[1]);
+                    }
+                }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -31,7 +35,6 @@ public class Config {
 
     public String value(String key) {
         return values.get(key);
-       // throw new UnsupportedOperationException("Don't implement this method yet!");
     }
 
     @Override
@@ -47,6 +50,6 @@ public class Config {
 
     public static void main(String[] args) {
         System.out.println(new Config("data/app.properties"));
-        new Config("data/pair_with_keyname.properties").load();
+        new Config("data/test_key_value_ok.properties").load();
     }
 }
