@@ -15,9 +15,6 @@ public class Config {
         this.path = path;
     }
 
-    /*Реализуйте метод load() по аналогии с методом toString().
-    Метод load должен загружать пару ключ-значение в Map values.
-    */
     public void load() {
         try (BufferedReader read = new BufferedReader(new FileReader(this.path))) {
             for (String line = read.readLine(); line != null; line = read.readLine()) {
