@@ -31,12 +31,6 @@ public class Analysis {
             throw new RuntimeException(e);
         }
     }
-
-    public void writeTime() {
-
-    }
-
-
     public static void main(String[] args) {
         Analysis analysis = new Analysis();
         analysis.unavailable("data/server.log", "data/target.csv");
