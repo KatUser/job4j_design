@@ -13,7 +13,7 @@ public class Analysis {
                             new FileOutputStream(target, true)))) {
                         printWriter.print(words[1] + ";");
                     } catch (FileNotFoundException e) {
-                        throw new RuntimeException(e);
+                        e.printStackTrace();
                     }
                     wroteTheStartOfDeadServer = true;
                 }
@@ -22,13 +22,13 @@ public class Analysis {
                             new FileOutputStream(target, true)))) {
                         printWriter.println(words[1] + ";");
                     } catch (FileNotFoundException e) {
-                        throw new RuntimeException(e);
+                        e.printStackTrace();
                     }
                     wroteTheStartOfDeadServer = false;
                 }
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
     public static void main(String[] args) {
