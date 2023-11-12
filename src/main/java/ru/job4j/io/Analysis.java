@@ -4,33 +4,23 @@ import java.io.*;
 
 public class Analysis {
     public void unavailable(String source, String target) {
-        boolean wroteTheStartOfDeadServer = false;
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(source))) {
+        boolean serverIsDead = false;
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(source));
+             PrintWriter printWriter =
+                     new PrintWriter(new BufferedOutputStream(new FileOutputStream(target, true)))) {
             for (String line = bufferedReader.readLine(); line != null; line = bufferedReader.readLine()) {
-                if ((line.contains("400") || line.contains("500")) && !wroteTheStartOfDeadServer) {
-                    writeTime(target, line);
-                    wroteTheStartOfDeadServer = true;
+                if ((line.contains("400") || line.contains("500")) && !serverIsDead) {
+                    String[] lineSplit = line.split(" ");
+                    printWriter.print(lineSplit[1] + ";");
+                    serverIsDead = true;
                 }
-                if ((line.contains("200") || line.contains("300")) && wroteTheStartOfDeadServer) {
-                    writeTime(target, line);
-                    wroteTheStartOfDeadServer = false;
+                if ((line.contains("200") || line.contains("300")) && serverIsDead) {
+                    String[] lineSplit = line.split(" ");
+                    printWriter.println(lineSplit[1] + ";");
+                    serverIsDead = false;
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void writeTime(String target, String line) {
-        String[] lineSplit = line.split(" ");
-        try (PrintWriter printWriter = new PrintWriter(new BufferedOutputStream(
-                new FileOutputStream(target, true)))) {
-            if (("400").equals(lineSplit[0]) || ("500").equals(lineSplit[0])) {
-                printWriter.print(lineSplit[1] + ";");
-            } else {
-                printWriter.println(lineSplit[1] + ";");
-            }
-        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
