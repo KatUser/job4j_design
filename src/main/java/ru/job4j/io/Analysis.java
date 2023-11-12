@@ -16,7 +16,7 @@ public class Analysis {
                 }
                 if ((line.contains("200") || line.contains("300")) && serverIsDead) {
                     String[] lineSplit = line.split(" ");
-                    printWriter.println(lineSplit[1] + ";");
+                    printWriter.append(lineSplit[1]).append(";");
                     serverIsDead = false;
                 }
             }
