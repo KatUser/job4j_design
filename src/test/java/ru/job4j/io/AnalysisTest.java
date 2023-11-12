@@ -66,5 +66,4 @@ class AnalysisTest {
         }
         assertThat("").hasToString(rsl.toString());
     }
-
 }
