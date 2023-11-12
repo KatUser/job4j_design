@@ -11,12 +11,12 @@ public class Analysis {
             for (String line = bufferedReader.readLine(); line != null; line = bufferedReader.readLine()) {
                 if ((line.contains("400") || line.contains("500")) && !serverIsDead) {
                     String[] lineSplit = line.split(" ");
-                    printWriter.print(lineSplit[1] + ";");
+                    printWriter.append(lineSplit[1]).append(";");
                     serverIsDead = true;
                 }
                 if ((line.contains("200") || line.contains("300")) && serverIsDead) {
                     String[] lineSplit = line.split(" ");
-                    printWriter.append(lineSplit[1]).append(";");
+                    printWriter.append(lineSplit[1]).append(";").append(System.lineSeparator());
                     serverIsDead = false;
                 }
             }
