@@ -8,7 +8,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 public class AttributesUsage {
     public static void main(String[] args) throws IOException {
         Path file = Path.of("attributes.txt");
-       // Files.createFile(file);
+        Files.createFile(file);
         BasicFileAttributes attributes = Files.readAttributes(file, BasicFileAttributes.class);
         System.out.println("Is this a regular file?" + attributes.isRegularFile());
         System.out.println("Is this a dir?" + attributes.isDirectory());
