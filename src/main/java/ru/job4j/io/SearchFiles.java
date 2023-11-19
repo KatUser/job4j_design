@@ -15,6 +15,7 @@ public class SearchFiles implements FileVisitor<Path> {
         this.pathList = new ArrayList<>();
         this.condition = condition;
     }
+
     public List<Path> getPaths() {
         return pathList;
     }
@@ -23,6 +24,7 @@ public class SearchFiles implements FileVisitor<Path> {
         Path start = Paths.get("C:\\projects\\job4j_design\\src\\main\\java\\ru\\job4j\\io");
         search(start, p -> p.toFile().getName().endsWith(".java")).forEach(System.out::println);
     }
+
     public static List<Path> search(Path root, Predicate<Path> condition) throws IOException {
         SearchFiles searcher = new SearchFiles(condition);
         Files.walkFileTree(root, searcher);
