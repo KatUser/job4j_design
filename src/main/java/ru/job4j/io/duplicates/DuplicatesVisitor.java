@@ -9,24 +9,32 @@ import java.util.*;
 
 public class DuplicatesVisitor extends SimpleFileVisitor<Path> {
 
-    public static Map<Long, String> pathHashMap = new HashMap<>();
-    public static Set<Path> pathSet = new HashSet<>();
+    public static Map<FileProperty, Path> pathMap = new HashMap<>();
+    public static Map<FileProperty, Path> duplicatesMap = new HashMap<>();
+
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attributes) throws IOException {
-            FileProperty fileProperty
-                    = new FileProperty(file.toFile().length(), file.toFile().getName());
-            if (pathHashMap.containsKey(fileProperty.getSize())
-                    && pathHashMap.get(fileProperty.getSize()).equals(file.toFile().getName())) {
-                pathSet.add(file);
-            } else {
-                pathHashMap.put(fileProperty.getSize(), fileProperty.getName());
-            }
+        FileProperty fileProperty
+                = new FileProperty(file.toFile().length(), file.toFile().getName());
+        if (pathMap.containsKey(fileProperty)) {
+            duplicatesMap.put(fileProperty, file.toAbsolutePath());
+
+        } else {
+            pathMap.put(fileProperty, file.toAbsolutePath());
+        }
         return super.visitFile(file, attributes);
     }
 
     public static void printFiles() {
-        for (Path f : pathSet) {
-            System.out.println(f.toAbsolutePath());
+        FileProperty fp = null;
+        for (Map.Entry<FileProperty, Path> file : duplicatesMap.entrySet()) {
+            fp = file.getKey();
+            System.out.println(file.getValue());
+            for (Map.Entry<FileProperty, Path> filedupl : pathMap.entrySet()) {
+                if (filedupl.getKey().equals(fp)) {
+                    System.out.println(filedupl.getValue());
+                }
+            }
         }
     }
 }
