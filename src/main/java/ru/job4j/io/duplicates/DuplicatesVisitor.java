@@ -9,8 +9,8 @@ import java.util.*;
 
 public class DuplicatesVisitor extends SimpleFileVisitor<Path> {
 
-    private static Map<FileProperty, Path> allFilesMap = new HashMap<>();
-    private static Map<FileProperty, Path> duplicatesMap = new HashMap<>();
+    private Map<FileProperty, Path> allFilesMap = new HashMap<>();
+    private Map<FileProperty, Path> duplicatesMap = new HashMap<>();
 
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attributes) throws IOException {
@@ -18,14 +18,13 @@ public class DuplicatesVisitor extends SimpleFileVisitor<Path> {
                 = new FileProperty(file.toFile().length(), file.toFile().getName());
         if (allFilesMap.containsKey(fileProperty)) {
             duplicatesMap.put(fileProperty, file.toAbsolutePath());
-
         } else {
             allFilesMap.put(fileProperty, file.toAbsolutePath());
         }
         return super.visitFile(file, attributes);
     }
 
-    public static void printFiles() {
+    public void printFiles() {
         for (Map.Entry<FileProperty, Path> duplicateFile : duplicatesMap.entrySet()) {
             for (Map.Entry<FileProperty, Path> file : allFilesMap.entrySet()) {
                 if (file.getKey().equals(duplicateFile.getKey())) {
