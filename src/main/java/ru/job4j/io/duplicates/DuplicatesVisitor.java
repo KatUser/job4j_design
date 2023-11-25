@@ -16,13 +16,12 @@ public class DuplicatesVisitor extends SimpleFileVisitor<Path> {
     public FileVisitResult visitFile(Path file, BasicFileAttributes attributes) throws IOException {
         FileProperty fileProperty
                 = new FileProperty(file.toFile().length(), file.toFile().getName());
-        if (allFilesMap.containsKey(fileProperty)) {
-            duplicatesMap.put(fileProperty, file.toAbsolutePath());
+        if (duplicatesMap.putIfAbsent(fileProperty, file.toAbsolutePath()) != null) {
+            allFilesMap.put(fileProperty, file.toAbsolutePath());
         }
-        allFilesMap.put(fileProperty, file.toAbsolutePath());
+        duplicatesMap.put(fileProperty, file.toAbsolutePath());
         return super.visitFile(file, attributes);
     }
-
     public void printFiles() {
         for (Map.Entry<FileProperty, Path> duplicateFile : duplicatesMap.entrySet()) {
             for (Map.Entry<FileProperty, Path> file : allFilesMap.entrySet()) {
