@@ -22,19 +22,18 @@ public class SearchFiles implements FileVisitor<Path> {
     }
 
     public static void validateArguments(String[] args) {
-        if (args.length == 2) {
-            if (!Files.isDirectory(Path.of(args[0])) || !Files.exists(Path.of(args[0]))) {
-                throw new IllegalArgumentException(
-                        String.format("Not a valid argument for a directory : %s", args[0]));
-            }
-            if (!args[1].startsWith(".") || args[1].length() < 2) {
-                throw new IllegalArgumentException(
-                        String.format("Not a valid argument for a file extension : %s", args[1]));
-            }
-        } else {
+        if (args.length != 2) {
             throw new IllegalArgumentException(
                     String.format("Please check that you have two arguments, not : %s", args.length));
         }
+        if (!Files.isDirectory(Path.of(args[0])) || !Files.exists(Path.of(args[0]))) {
+            throw new IllegalArgumentException(
+                    String.format("Not a valid argument for a directory : %s", args[0]));
+        }
+        if (!args[1].startsWith(".") || args[1].length() < 2) {
+                throw new IllegalArgumentException(
+                        String.format("Not a valid argument for a file extension : %s", args[1]));
+            }
     }
 
     public static void main(String[] args) throws IOException {
