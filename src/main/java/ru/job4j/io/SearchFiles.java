@@ -6,8 +6,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 
 public class SearchFiles implements FileVisitor<Path> {
 
@@ -28,9 +27,7 @@ public class SearchFiles implements FileVisitor<Path> {
                 throw new IllegalArgumentException(
                         String.format("Not a valid argument for a directory : %s", args[0]));
             }
-            Pattern pattern = Pattern.compile("^[a-zA-Z0-9.]+$");
-            Matcher matcher = pattern.matcher(args[1]);
-            if (!matcher.find()) {
+            if (!args[1].startsWith(".") || args[1].length() < 2) {
                 throw new IllegalArgumentException(
                         String.format("Not a valid argument for a file extension : %s", args[1]));
             }
