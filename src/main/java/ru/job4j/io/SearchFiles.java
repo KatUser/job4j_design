@@ -5,8 +5,9 @@ import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Predicate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SearchFiles implements FileVisitor<Path> {
 
@@ -22,16 +23,21 @@ public class SearchFiles implements FileVisitor<Path> {
     }
 
     public static void validateArguments(String[] args) {
-        if (args.length < 2) {
-            throw new IllegalArgumentException("Not enough arguments provided");
+        if (args.length == 2) {
+            if (!Files.isDirectory(Path.of(args[0])) || !Files.exists(Path.of(args[0]))) {
+                throw new IllegalArgumentException(
+                        String.format("Not a valid argument for a directory : %s", args[0]));
+            }
+            Pattern pattern = Pattern.compile("^[a-zA-Z0-9.]+$");
+            Matcher matcher = pattern.matcher(args[1]);
+            if (!matcher.find()) {
+                throw new IllegalArgumentException(
+                        String.format("Not a valid argument for a file extension : %s", args[1]));
+            }
+        } else {
+            throw new IllegalArgumentException(
+                    String.format("Please check that you have two arguments, not : %s", args.length));
         }
-        if (!Objects.equals(args[0], "C:")) {
-            throw new IllegalArgumentException("Not a valid argument for a directory");
-        }
-        if (!Objects.equals(args[1], "java")) {
-            throw new IllegalArgumentException("Not a valid argument for a file extension");
-        }
-
     }
 
     public static void main(String[] args) throws IOException {
