@@ -45,30 +45,23 @@ public class ArgsName {
                 throw new IllegalArgumentException(
                         String.format("Error: This argument '%s' does not contain an equal sign", arg)
                 );
-
             }
             if (arg.startsWith("-=")) {
                 throw new IllegalArgumentException(
                         String.format("Error: This argument '%s' does not contain a key", arg)
                 );
             }
-            if (arg.endsWith("=") && arg.chars().filter(ch -> ch == '=').count() < 2
-                    && arg.startsWith("-")) {
+            if (arg.endsWith("=") && arg.startsWith("-") && arg.chars().filter(ch -> ch == '=').count() < 2) {
                 throw new IllegalArgumentException(
                         String.format("Error: This argument '%s' does not contain a value", arg)
                 );
             }
         }
-
-
-
     }
-
 
     public static void main(String[] args) {
         String[] arguments = {"-Xmx=512", "-encoding=UTF-8"};
         ArgsName jvm = ArgsName.of(arguments);
         System.out.println(jvm.get("Xmx"));
-
     }
 }
