@@ -85,4 +85,36 @@ class ArgsNameTest {
                 .hasMessageMatching("^.+")
                 .hasMessageContaining("Error: This argument 'request=?msg=Exit=' does not start with a '-' character");
     }
+
+    @Test
+    void whenNoKeyThenExceptionThrown() {
+        assertThatThrownBy(() -> ArgsName.of(new String[]{"-=someValue"}))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageMatching("^.+")
+                .hasMessageContaining("Error: This argument '-=someValue' does not contain a key");
+    }
+
+    @Test
+    void whenNoValueThenExceptionIsThrown() {
+        assertThatThrownBy(() -> ArgsName.of(new String[]{"-someKey="}))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageMatching("^.+")
+                .hasMessageContaining("Error: This argument '-someKey=' does not contain a value");
+    }
+
+    @Test
+    void whenNoEqualSignExceptionIsThrown() {
+        assertThatThrownBy(() -> ArgsName.of(new String[]{"-key:value"}))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageMatching("^.+")
+                .hasMessageContaining("Error: This argument '-key:value' does not contain an equal sign");
+    }
+
+    @Test
+    void whenNoHyphenExceptionIsThrown() {
+        assertThatThrownBy(() -> ArgsName.of(new String[]{"key=value"}))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageMatching("^.+")
+                .hasMessageContaining("Error: This argument 'key=value' does not start with a '-' character");
+    }
 }
