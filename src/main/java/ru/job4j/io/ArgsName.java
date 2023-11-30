@@ -9,7 +9,7 @@ public class ArgsName {
     private final Map<String, String> values = new HashMap<>();
 
     public String get(String key) {
-        String res = values.get("-" + key);
+        String res = values.get(key);
         if (res == null) {
             throw new IllegalArgumentException(String.format("This key: '%s' is missing", key));
         }
@@ -20,7 +20,7 @@ public class ArgsName {
         values.putAll(Arrays.stream(arguments)
                         .map(String::trim)
                         .map(str -> str.split("=", 2))
-                .collect(Collectors.toMap(e -> e[0], e -> e[1])));
+                .collect(Collectors.toMap(e -> e[0].substring(1), e -> e[1])));
     }
 
     public static ArgsName of(String[] arguments) {
