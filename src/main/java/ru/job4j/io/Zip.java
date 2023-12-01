@@ -48,7 +48,6 @@ public class Zip {
         }
     }
 
-    /* -d=c:\project\job4j\ -e=.class -o=project.zip **/
     public static void main(String[] args) throws IOException {
         checkParameters(args);
         ArgsName.checkArgsValidity(args);
