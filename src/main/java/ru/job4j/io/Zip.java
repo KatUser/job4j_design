@@ -4,17 +4,15 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-
-import ru.job4j.io.ArgsName;
-import ru.job4j.io.SearchFiles;
 
 public class Zip {
 
     public void packFiles(List<Path> sources, File target) {
-
+        for (Path s : sources) {
+            packSingleFile(s.toFile(), target);
+        }
     }
 
     public void packSingleFile(File source, File target) {
@@ -51,19 +49,12 @@ public class Zip {
     }
 
     /* -d=c:\project\job4j\ -e=.class -o=project.zip **/
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         checkParameters(args);
         ArgsName.checkArgsValidity(args);
         Zip zip = new Zip();
-        /*
-        zip.packSingleFile(
-                new File("./pom.xml"),
-                new File("./pom.zip")
-        );
-         **/
-
-        System.out.println(args[0].split("=")[1]);
-
-
+        List<Path> pathList = SearchFiles.search(Path.of(args[0].split("=")[1]),
+                f -> f.toFile().getName().endsWith(args[1].split("=")[1]));
+        zip.packFiles(pathList, Path.of(args[2].split("=")[1]).toFile());
     }
 }
