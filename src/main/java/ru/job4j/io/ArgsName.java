@@ -27,7 +27,6 @@ public class ArgsName {
         checkArgsValidity(arguments);
         ArgsName names = new ArgsName();
         names.parse(arguments);
-
         return names;
     }
 
