@@ -36,7 +36,7 @@ public class Zip {
             );
         }
         if (!arguments[1].contains("=.")
-                || !arguments[1].split("=")[1].equals(".")) {
+                || arguments[1].split("=")[1].equals(".")) {
             throw new IllegalArgumentException(
                     String.format("This is not a file: %s", arguments[1].split("=")[1])
 
