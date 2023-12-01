@@ -29,9 +29,17 @@ public class Zip {
     }
 
     private static void checkParameters(String[] arguments) {
-        if (!Files.exists(Path.of(arguments[0].split("=")[1]))) {
+        if (!Files.isDirectory(Path.of(arguments[0].split("=")[1]))
+                || !Files.exists(Path.of(arguments[0].split("=")[1]))) {
             throw new IllegalArgumentException(
                     String.format("This directory: %s doesn't exist", arguments[0].split("=")[1])
+            );
+        }
+        if (!arguments[1].contains("=.")
+                || !arguments[1].split("=")[1].equals(".")) {
+            throw new IllegalArgumentException(
+                    String.format("This is not a file: %s", arguments[1].split("=")[1])
+
             );
         }
         if (!arguments[2].split("=")[1].endsWith(".zip")) {
@@ -44,6 +52,7 @@ public class Zip {
 
     /* -d=c:\project\job4j\ -e=.class -o=project.zip **/
     public static void main(String[] args) {
+        checkParameters(args);
         ArgsName.checkArgsValidity(args);
         Zip zip = new Zip();
         /*
@@ -52,7 +61,7 @@ public class Zip {
                 new File("./pom.zip")
         );
          **/
-        checkParameters(args);
+
         System.out.println(args[0].split("=")[1]);
 
 
