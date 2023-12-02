@@ -57,10 +57,9 @@ public class Zip {
     public static void main(String[] args) throws IOException {
         checkParameters(args);
         ArgsName.checkArgsValidity(args);
-//        System.out.println(args.length);
-//        Zip zip = new Zip();
-//        List<Path> pathList = SearchFiles.search(Path.of(args[0].split("=")[1]),
-//                f -> !f.toFile().getName().endsWith(args[1].split("=")[1]));
-//        zip.packFiles(pathList, Path.of(args[2].split("=")[1]).toFile());
+        Zip zip = new Zip();
+        List<Path> pathList = SearchFiles.search(Path.of(args[0].split("=")[1]),
+                f -> !(f.toFile().getName().endsWith(args[1].split("=")[1])));
+        zip.packFiles(pathList, Path.of(args[2].split("=")[1]).toFile());
     }
 }
