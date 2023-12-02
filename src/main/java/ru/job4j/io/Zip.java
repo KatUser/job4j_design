@@ -10,7 +10,8 @@ import java.util.zip.ZipOutputStream;
 public class Zip {
 
     public void packFiles(List<Path> sources, File target) {
-        for (Path s : sources) {
+        for (ListIterator<Path> it = sources.listIterator(); it.hasNext();) {
+            Path s = it.next();
             packSingleFile(s.toFile(), target);
         }
     }
@@ -27,6 +28,11 @@ public class Zip {
     }
 
     private static void checkParameters(String[] arguments) {
+        if (arguments.length != 3) {
+            throw new IllegalArgumentException((
+                    String.format("Not enough arguments passed : %s", arguments.length)
+                    ));
+        }
         if (!Files.isDirectory(Path.of(arguments[0].split("=")[1]))
                 || !Files.exists(Path.of(arguments[0].split("=")[1]))) {
             throw new IllegalArgumentException(
@@ -51,9 +57,10 @@ public class Zip {
     public static void main(String[] args) throws IOException {
         checkParameters(args);
         ArgsName.checkArgsValidity(args);
-        Zip zip = new Zip();
-        List<Path> pathList = SearchFiles.search(Path.of(args[0].split("=")[1]),
-                f -> f.toFile().getName().endsWith(args[1].split("=")[1]));
-        zip.packFiles(pathList, Path.of(args[2].split("=")[1]).toFile());
+//        System.out.println(args.length);
+//        Zip zip = new Zip();
+//        List<Path> pathList = SearchFiles.search(Path.of(args[0].split("=")[1]),
+//                f -> !f.toFile().getName().endsWith(args[1].split("=")[1]));
+//        zip.packFiles(pathList, Path.of(args[2].split("=")[1]).toFile());
     }
 }
