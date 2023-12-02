@@ -10,8 +10,7 @@ import java.util.zip.ZipOutputStream;
 public class Zip {
 
     public void packFiles(List<Path> sources, File target) {
-        for (ListIterator<Path> it = sources.listIterator(); it.hasNext();) {
-            Path s = it.next();
+        for (Path s : sources) {
             packSingleFile(s.toFile(), target);
         }
     }
