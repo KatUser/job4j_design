@@ -10,14 +10,22 @@ import java.util.zip.ZipOutputStream;
 public class Zip {
 
     public void packFiles(List<Path> sources, File target) {
-        for (Path s : sources) {
-            packSingleFile(s.toFile(), target);
-        }
+            try (ZipOutputStream zipOutputStream = new ZipOutputStream(new BufferedOutputStream(
+                    new FileOutputStream(target)))) {
+                for (Path s : sources) {
+                    zipOutputStream.putNextEntry(new ZipEntry(s.toFile().getPath()));
+                try (BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(s.toFile()))) {
+                    zipOutputStream.write(bufferedInputStream.readAllBytes());
+                }
+            }
+        } catch (IOException e) {
+                e.printStackTrace();
+            }
     }
 
     public void packSingleFile(File source, File target) {
         try (ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(target)))) {
-            zip.putNextEntry(new ZipEntry(source.getPath()));
+            zip.putNextEntry(new ZipEntry(source.getName()));
             try (BufferedInputStream out = new BufferedInputStream(new FileInputStream(source))) {
                 zip.write(out.readAllBytes());
             }
@@ -56,9 +64,10 @@ public class Zip {
     public static void main(String[] args) throws IOException {
         checkParameters(args);
         ArgsName.checkArgsValidity(args);
+        //ArgsName argsName = ArgsName.of(args);
         Zip zip = new Zip();
         List<Path> pathList = SearchFiles.search(Path.of(args[0].split("=")[1]),
-                f -> !(f.toFile().getName().endsWith(args[1].split("=")[1])));
+                f -> !f.toFile().getName().endsWith(args[1].split("=")[1]));
         zip.packFiles(pathList, Path.of(args[2].split("=")[1]).toFile());
     }
 }
