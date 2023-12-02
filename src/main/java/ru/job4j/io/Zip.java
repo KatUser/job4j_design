@@ -64,7 +64,6 @@ public class Zip {
     public static void main(String[] args) throws IOException {
         checkParameters(args);
         ArgsName.checkArgsValidity(args);
-        //ArgsName argsName = ArgsName.of(args);
         Zip zip = new Zip();
         List<Path> pathList = SearchFiles.search(Path.of(args[0].split("=")[1]),
                 f -> !f.toFile().getName().endsWith(args[1].split("=")[1]));
