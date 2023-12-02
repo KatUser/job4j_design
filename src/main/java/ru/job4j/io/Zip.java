@@ -1,7 +1,6 @@
 package ru.job4j.io;
 
 import java.io.*;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.zip.ZipEntry;
@@ -10,17 +9,17 @@ import java.util.zip.ZipOutputStream;
 public class Zip {
 
     public void packFiles(List<Path> sources, File target) {
-            try (ZipOutputStream zipOutputStream = new ZipOutputStream(new BufferedOutputStream(
-                    new FileOutputStream(target)))) {
-                for (Path s : sources) {
-                    zipOutputStream.putNextEntry(new ZipEntry(s.toFile().getPath()));
+        try (ZipOutputStream zipOutputStream = new ZipOutputStream(new BufferedOutputStream(
+                new FileOutputStream(target)))) {
+            for (Path s : sources) {
+                zipOutputStream.putNextEntry(new ZipEntry(s.toFile().getPath()));
                 try (BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(s.toFile()))) {
                     zipOutputStream.write(bufferedInputStream.readAllBytes());
                 }
             }
         } catch (IOException e) {
-                e.printStackTrace();
-            }
+            e.printStackTrace();
+        }
     }
 
     public void packSingleFile(File source, File target) {
@@ -34,39 +33,31 @@ public class Zip {
         }
     }
 
-    private static void checkParameters(String[] arguments) {
-        if (arguments.length != 3) {
-            throw new IllegalArgumentException((
-                    String.format("Not enough arguments passed : %s", arguments.length)
-                    ));
-        }
-        if (!Files.isDirectory(Path.of(arguments[0].split("=")[1]))
-                || !Files.exists(Path.of(arguments[0].split("=")[1]))) {
+    private static void checkParameters(ArgsName argsName) {
+        if (!Path.of(argsName.get("d")).toFile().isDirectory()
+                || !Path.of(argsName.get("d")).toFile().exists()) {
             throw new IllegalArgumentException(
-                    String.format("This directory: %s doesn't exist", arguments[0].split("=")[1])
+                    String.format("Source folder doesn't exist: %s", argsName.get("d"))
             );
         }
-        if (!arguments[1].contains("=.")
-                || arguments[1].split("=")[1].equals(".")) {
+        if (!argsName.get("e").contains(".") || argsName.get("e").equals(".")) {
             throw new IllegalArgumentException(
-                    String.format("This is not a file: %s", arguments[1].split("=")[1])
-
+                    String.format("This is not a valid file extension: %s", argsName.get("e"))
             );
         }
-        if (!arguments[2].split("=")[1].endsWith(".zip")) {
+        if (!argsName.get("o").endsWith(".zip")) {
             throw new IllegalArgumentException(
-                    String.format("This directory: %s needs to have zip extension", arguments[2].split("=")[1])
-
+                    String.format("This is not an archive file: %s", argsName.get("o"))
             );
         }
     }
 
     public static void main(String[] args) throws IOException {
-        checkParameters(args);
-        ArgsName.checkArgsValidity(args);
+        ArgsName argsName = ArgsName.of(args);
+        checkParameters(argsName);
         Zip zip = new Zip();
-        List<Path> pathList = SearchFiles.search(Path.of(args[0].split("=")[1]),
-                f -> !f.toFile().getName().endsWith(args[1].split("=")[1]));
-        zip.packFiles(pathList, Path.of(args[2].split("=")[1]).toFile());
+        List<Path> pathList = SearchFiles.search(Path.of(argsName.get("d")),
+                f -> !f.toFile().getName().endsWith(argsName.get("e")));
+        zip.packFiles(pathList, Path.of(argsName.get("o")).toFile());
     }
 }
