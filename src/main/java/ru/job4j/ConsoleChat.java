@@ -16,13 +16,11 @@ public class ConsoleChat {
     }
 
     public void run() {
+        List<String> chatlog = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
-       // String input = scanner.nextLine();
-        printRandomPhrase(readPhrases());
+        boolean running = true;
 
-
-
-    }
+        }
 
     private List<String> readPhrases() {
         List<String> botWords = new ArrayList<>();
@@ -37,14 +35,14 @@ public class ConsoleChat {
         return botWords;
     }
 
-    private void printRandomPhrase(List<String> botWords) {
+    private String printRandomPhrase(List<String> botWords) {
         int index = new Random().nextInt(botWords.size());
-        System.out.println(botWords.get(index));
+        return botWords.get(index);
     }
 
     private void saveLog(List<String> log) {
-        try (PrintWriter printWriter = new PrintWriter(new FileWriter(path, true))) {
-            printWriter.println(log);
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path, true))) {
+            bufferedWriter.write(log.toString() + System.lineSeparator());
         } catch (IOException e) {
             e.printStackTrace();
         }
