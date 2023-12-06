@@ -16,9 +16,9 @@ public class ConsoleChat {
     }
 
     public void run() {
+        boolean running = true;
         List<String> chatlog = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
-        boolean running = true;
 
         }
 
