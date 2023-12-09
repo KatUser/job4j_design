@@ -41,7 +41,6 @@ public class ConsoleChat {
             }
         }
         saveLog(chatlog);
-
     }
 
     private List<String> readPhrases() {
