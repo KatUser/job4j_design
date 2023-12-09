@@ -16,38 +16,34 @@ public class ConsoleChat {
     }
 
     public void run() {
+        Scanner scanner = new Scanner(System.in);
         boolean isrunning = true;
+        List<String> chatlog = new ArrayList<>();
+        String userInput = scanner.next();
         while (isrunning) {
-            Scanner scanner = new Scanner(System.in);
-            String userInput = scanner.next();
             while (!(userInput.equalsIgnoreCase(STOP) || userInput.equalsIgnoreCase(OUT))) {
-                List<String> chatlog = new ArrayList<>();
-                chatlog.add(userInput);
-                String botResponse2 = returnRandomPhrase(readPhrases());
-                System.out.println(botResponse2);
-                chatlog.add(botResponse2);
-                saveLog(chatlog);
+                chatlog.add("Пользователь : " + userInput + System.lineSeparator());
+                String botResponse = returnRandomPhrase(readPhrases());
+                System.out.println(botResponse);
+                chatlog.add("Бот : " + botResponse + System.lineSeparator());
                 userInput = scanner.next();
             }
             if (userInput.equalsIgnoreCase(OUT)) {
-                List<String> chatlog = new ArrayList<>();
-                chatlog.add(userInput);
-                saveLog(chatlog);
+                chatlog.add("Пользователь : " + userInput + System.lineSeparator());
                 isrunning = false;
             }
             if (userInput.equalsIgnoreCase(STOP)) {
-                List<String> chatlog = new ArrayList<>();
-                chatlog.add(userInput);
-                saveLog(chatlog);
+                chatlog.add("Пользователь : " + userInput + System.lineSeparator());
                 userInput = scanner.nextLine();
-                while (!userInput.equalsIgnoreCase(CONTINUE)) {
+                while (!(userInput.equalsIgnoreCase(CONTINUE)
+                        || userInput.equalsIgnoreCase(OUT))) {
                     userInput = scanner.nextLine();
-                    List<String> chatlog2 = new ArrayList<>();
-                    chatlog2.add(userInput);
-                    saveLog(chatlog2);
+                    chatlog.add("Пользователь : " + userInput + System.lineSeparator());
                 }
             }
         }
+        saveLog(chatlog);
+
     }
 
     private List<String> readPhrases() {
