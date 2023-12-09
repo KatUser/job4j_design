@@ -34,10 +34,9 @@ public class ConsoleChat {
             }
             if (userInput.equalsIgnoreCase(STOP)) {
                 chatlog.add("Пользователь : " + userInput + System.lineSeparator());
-                userInput = scanner.nextLine();
                 while (!(userInput.equalsIgnoreCase(CONTINUE)
                         || userInput.equalsIgnoreCase(OUT))) {
-                    userInput = scanner.nextLine();
+                    userInput = scanner.next();
                     chatlog.add("Пользователь : " + userInput + System.lineSeparator());
                 }
             }
@@ -76,5 +75,4 @@ public class ConsoleChat {
         ConsoleChat cc = new ConsoleChat("src/data/chatlog.txt", "src/data/botAnswers.txt");
         cc.run();
     }
-
 }
