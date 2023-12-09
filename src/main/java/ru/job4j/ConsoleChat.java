@@ -17,20 +17,19 @@ public class ConsoleChat {
 
     public void run() {
         Scanner scanner = new Scanner(System.in);
-        boolean isrunning = true;
+        boolean isRunning = true;
         List<String> chatlog = new ArrayList<>();
-        String userInput = scanner.next();
-        while (isrunning) {
-            while (!(userInput.equalsIgnoreCase(STOP) || userInput.equalsIgnoreCase(OUT))) {
+        while (isRunning) {
+            String userInput = scanner.next();
+            if (!(userInput.equalsIgnoreCase(STOP) || userInput.equalsIgnoreCase(OUT))) {
                 chatlog.add("Пользователь : " + userInput + System.lineSeparator());
                 String botResponse = returnRandomPhrase(readPhrases());
                 System.out.println(botResponse);
                 chatlog.add("Бот : " + botResponse + System.lineSeparator());
-                userInput = scanner.next();
             }
             if (userInput.equalsIgnoreCase(OUT)) {
                 chatlog.add("Пользователь : " + userInput + System.lineSeparator());
-                isrunning = false;
+                isRunning = false;
             }
             if (userInput.equalsIgnoreCase(STOP)) {
                 chatlog.add("Пользователь : " + userInput + System.lineSeparator());
