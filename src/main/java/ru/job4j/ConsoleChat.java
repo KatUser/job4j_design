@@ -21,14 +21,13 @@ public class ConsoleChat {
         List<String> chatlog = new ArrayList<>();
         while (isRunning) {
             String userInput = scanner.next();
+            chatlog.add("Пользователь : " + userInput + System.lineSeparator());
             if (!(userInput.equalsIgnoreCase(STOP) || userInput.equalsIgnoreCase(OUT))) {
-                chatlog.add("Пользователь : " + userInput + System.lineSeparator());
                 String botResponse = returnRandomPhrase(readPhrases());
                 System.out.println(botResponse);
                 chatlog.add("Бот : " + botResponse + System.lineSeparator());
             }
             if (userInput.equalsIgnoreCase(STOP)) {
-                chatlog.add("Пользователь : " + userInput + System.lineSeparator());
                 while (!(userInput.equalsIgnoreCase(CONTINUE)
                         || userInput.equalsIgnoreCase(OUT))) {
                     userInput = scanner.next();
@@ -36,7 +35,6 @@ public class ConsoleChat {
                 }
             }
             if (userInput.equalsIgnoreCase(OUT)) {
-                chatlog.add("Пользователь : " + userInput + System.lineSeparator());
                 isRunning = false;
             }
         }
