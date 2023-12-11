@@ -19,11 +19,12 @@ public class ConsoleChat {
         Scanner scanner = new Scanner(System.in);
         boolean isRunning = true;
         List<String> chatlog = new ArrayList<>();
+        List<String> phrases = readPhrases();
         while (isRunning) {
             String userInput = scanner.next();
             chatlog.add("Пользователь : " + userInput + System.lineSeparator());
             if (!(userInput.equalsIgnoreCase(STOP) || userInput.equalsIgnoreCase(OUT))) {
-                String botResponse = returnRandomPhrase(readPhrases());
+                String botResponse = returnRandomPhrase(phrases);
                 System.out.println(botResponse);
                 chatlog.add("Бот : " + botResponse + System.lineSeparator());
             }
