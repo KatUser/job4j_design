@@ -18,24 +18,25 @@ public class ConsoleChat {
     public void run() {
         Scanner scanner = new Scanner(System.in);
         boolean isRunning = true;
+        String ln = System.lineSeparator();
         List<String> chatlog = new ArrayList<>();
         List<String> phrases = readPhrases();
         while (isRunning) {
             String userInput = scanner.next();
-            chatlog.add("Пользователь : " + userInput + System.lineSeparator());
-            if (!(userInput.equalsIgnoreCase(STOP) || userInput.equalsIgnoreCase(OUT))) {
+            chatlog.add("Пользователь : " + userInput + ln);
+            if (!(STOP.equalsIgnoreCase(userInput) || OUT.equalsIgnoreCase(userInput))) {
                 String botResponse = returnRandomPhrase(phrases);
                 System.out.println(botResponse);
-                chatlog.add("Бот : " + botResponse + System.lineSeparator());
+                chatlog.add("Бот : " + botResponse + ln);
             }
-            if (userInput.equalsIgnoreCase(STOP)) {
-                while (!(userInput.equalsIgnoreCase(CONTINUE)
-                        || userInput.equalsIgnoreCase(OUT))) {
+            if (STOP.equalsIgnoreCase(userInput)) {
+                while (!(CONTINUE.equalsIgnoreCase(userInput)
+                        || OUT.equalsIgnoreCase(userInput))) {
                     userInput = scanner.next();
-                    chatlog.add("Пользователь : " + userInput + System.lineSeparator());
+                    chatlog.add("Пользователь : " + userInput + ln);
                 }
             }
-            if (userInput.equalsIgnoreCase(OUT)) {
+            if (OUT.equalsIgnoreCase(userInput)) {
                 isRunning = false;
             }
         }
