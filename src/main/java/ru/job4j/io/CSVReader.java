@@ -21,7 +21,6 @@ public class CSVReader { /* -path=file.csv -delimiter=;  -out=stdout -filter=nam
             while (scanner.hasNextLine()) {
                 List<String> line = new ArrayList<>();
                 List<String> splitLine = Arrays.stream(scanner.nextLine().split(argsName.get("delimiter"))).toList();
-
                 if (i == 0) {
                     for (String filter : filters) {
                         if (splitLine.contains(filter)) {
