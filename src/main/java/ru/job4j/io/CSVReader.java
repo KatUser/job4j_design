@@ -10,33 +10,37 @@ import static ru.job4j.io.ArgsName.checkArgsValidity;
 public class CSVReader { /* -path=file.csv -delimiter=;  -out=stdout -filter=name,age */
     public static void handle(ArgsName argsName) throws IOException {
 
-        List<String> filters = Arrays.stream(argsName.get("filter").split(",")).toList(); //[name, age]
+        List<String> filters = Arrays.stream(argsName.get("filter").split(",")).toList();
         List<String> filtersIndexes = new ArrayList<>();
 
+
         try {
-            int i = 0;
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(Paths.get("C:\\Users\\Pasku\\TestDir\\target.csv").toFile()));
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(Paths.get(argsName.get("out")).toFile()));
             var scanner = new Scanner(Paths.get(argsName.get("path"))).useDelimiter(System.lineSeparator());
+            int i = 0;
             while (scanner.hasNextLine()) {
-                String[] splitLine = scanner.nextLine().split(argsName.get("delimiter"));
+                List<String> line = new ArrayList<>();
+                List<String> splitLine = Arrays.stream(scanner.nextLine().split(argsName.get("delimiter"))).toList();
+
                 if (i == 0) {
-                    for (int j = 0; j < splitLine.length; j++) {
-                        if (filters.contains(splitLine[j])) {
-                            bufferedWriter.write(splitLine[j] + ";");
-                            filtersIndexes.add(String.valueOf(j));
+                    for (int j = 0; j < filters.size(); j++) { //-filter=education,age,last_name"
+                        if (splitLine.contains(filters.get(j))) { //splitline = "name,age,last_name,education",
+                            line.add(filters.get(j));
+                            filtersIndexes.add(String.valueOf(splitLine.indexOf(filters.get(j))));
                         }
                     }
+                    bufferedWriter.write(line.toString().replace(", ", argsName.get("delimiter")).replaceAll("^\\[|\\]$", ""));
                     bufferedWriter.newLine();
                     i++;
                 } else {
-                    for (int k = 0; k < splitLine.length; k++) {
-                        if (filtersIndexes.contains(String.valueOf(k))) {
-                            bufferedWriter.write(splitLine[k] + ";");
-                        }
+                    for (String str : filtersIndexes) {
+
+                            line.add(splitLine.get(Integer.parseInt(str)));
+
                     }
+                    bufferedWriter.write(line.toString().replace(", ", argsName.get("delimiter")).replaceAll("^\\[|\\]$", ""));
                     bufferedWriter.newLine();
                 }
-
             }
             bufferedWriter.close();
         } catch (IOException ex) {
