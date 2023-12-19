@@ -1,6 +1,7 @@
 package ru.job4j.io;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
@@ -13,8 +14,7 @@ import java.util.NoSuchElementException;
 class CSVReaderTest {
 
     @Test
-    void whenFilterTwoColumns() throws Exception {
-        Path folder = Path.of("C:\\Users\\Pasku\\TestDir");
+    void whenFilterTwoColumns(@TempDir Path folder) throws Exception {
         String data = String.join(
                 System.lineSeparator(),
                 "name;age;last_name;education",
@@ -40,8 +40,7 @@ class CSVReaderTest {
     }
 
     @Test
-    void whenFilterThreeColumns() throws Exception {
-        Path folder = Path.of("C:\\Users\\Pasku\\TestDir");
+    void whenFilterThreeColumns(@TempDir Path folder) throws Exception {
         String data = String.join(
                 System.lineSeparator(),
                 "name,age,last_name,education",
@@ -68,8 +67,7 @@ class CSVReaderTest {
     }
 
     @Test
-    void whenFilterOneColumn() throws Exception {
-        Path folder = Path.of("C:\\Users\\Pasku\\TestDir");
+    void whenFilterOneColumn(@TempDir Path folder) throws Exception {
         String data = String.join(
                 System.lineSeparator(),
                 "name,age,last_name,education",
@@ -96,8 +94,7 @@ class CSVReaderTest {
     }
 
     @Test
-    void whenFilterFourColumns() throws Exception {
-        Path folder = Path.of("C:\\Users\\Pasku\\TestDir");
+    void whenFilterFourColumns(@TempDir Path folder) throws Exception {
         String data = String.join(
                 System.lineSeparator(),
                 "name,age,last_name,education",
@@ -123,8 +120,7 @@ class CSVReaderTest {
         assertThat(Files.readString(target.toPath())).isEqualTo(expected);
     }
     @Test
-    void whenNothingToFilterThrowsException() throws Exception {
-        Path folder = Path.of("C:\\Users\\Pasku\\TestDir");
+    void whenNothingToFilterThrowsException(@TempDir Path folder) throws Exception {
         String data = String.join(
                 System.lineSeparator(),
                 "name,age,last_name,education",
