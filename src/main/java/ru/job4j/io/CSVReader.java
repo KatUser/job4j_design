@@ -39,7 +39,7 @@ public class CSVReader {
     private static void checkArgs(ArgsName argsName) {
         if (!argsName.get("path").endsWith("csv")) {
             throw new IllegalArgumentException(
-                    "Source should be a file with csv."
+                    "Source should be a file with csv extension."
             );
         }
         if (!";".equals(argsName.get("delimiter"))) {
