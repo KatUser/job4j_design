@@ -3,10 +3,12 @@ package ru.job4j.io;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Files;
+import java.util.NoSuchElementException;
 
 class CSVReaderTest {
 
@@ -119,5 +121,27 @@ class CSVReaderTest {
         ).concat(System.lineSeparator());
         CSVReader.handle(argsName);
         assertThat(Files.readString(target.toPath())).isEqualTo(expected);
+    }
+    @Test
+    void whenNothingToFilterThrowsException() throws Exception {
+        Path folder = Path.of("C:\\Users\\Pasku\\TestDir");
+        String data = String.join(
+                System.lineSeparator(),
+                "name,age,last_name,education",
+                "Tom,20,Smith,Bachelor",
+                "Jack,25,Johnson,Undergraduate",
+                "William,30,Brown,Secondary special"
+        );
+        File file = folder.resolve("source.csv").toFile();
+        File target = folder.resolve("target.csv").toFile();
+        ArgsName argsName = ArgsName.of(new String[]{
+                "-path=" + file.getAbsolutePath(), "-delimiter=,",
+                "-out=" + target.getAbsolutePath(), "-filter=test"
+        });
+        Files.writeString(file.toPath(), data);
+        assertThatThrownBy(() -> CSVReader.handle(argsName))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessageMatching("^.+")
+                .hasMessageContaining("No line found");
     }
 }
