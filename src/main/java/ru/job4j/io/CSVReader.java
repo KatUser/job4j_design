@@ -9,7 +9,7 @@ import static ru.job4j.io.ArgsName.checkArgsValidity;
 
 public class CSVReader {
     public static void handle(ArgsName argsName) throws IOException {
-        List<String> filtersIndexes = new ArrayList<>();
+        List<Integer> filtersIndexes = new ArrayList<>();
         try {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(Paths.get(argsName.get("out")).toFile()));
             var scanner = new Scanner(Paths.get(argsName.get("path"))).useDelimiter(System.lineSeparator());
@@ -20,7 +20,7 @@ public class CSVReader {
                 for (String filter : filters) {
                     if (splitLine.contains(filter)) {
                         line.add(filter);
-                        filtersIndexes.add(String.valueOf(splitLine.indexOf(filter)));
+                        filtersIndexes.add(splitLine.indexOf(filter));
                     }
                 }
                 bufferedWriter.write(line.toString().replace(", ", argsName.get("delimiter")).replaceAll("^\\[|]$", ""));
@@ -29,8 +29,8 @@ public class CSVReader {
             while (scanner.hasNextLine()) {
                 List<String> line = new ArrayList<>();
                 List<String> splitLine = Arrays.stream(scanner.nextLine().split(argsName.get("delimiter"))).toList();
-                for (String str : filtersIndexes) {
-                    line.add(splitLine.get(Integer.parseInt(str)));
+                for (int in : filtersIndexes) {
+                    line.add(splitLine.get(in));
                 }
                 bufferedWriter.write(line.toString().replace(", ", argsName.get("delimiter")).replaceAll("^\\[|]$", ""));
                 bufferedWriter.newLine();
