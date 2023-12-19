@@ -37,11 +37,28 @@ public class CSVReader {
     }
 
     private static void checkArgs(String[] args) {
-
+        for (String arg : args) {
+            if (arg.endsWith("=")) {
+                throw new IllegalArgumentException(
+                        String.format("Error: This argument '%s' does not contain a value.", arg)
+                );
+            }
+        }
+        if (!"csv".equals(args[0].split("=")[1].split("\\.")[1])) {
+            throw new IllegalArgumentException(
+                    "File with csv extension should be provided as a path."
+            );
+        }
+        if (!("stdout".equals(args[2].split("=")[1]) || Paths.get(args[2].split("=")[1]).toFile().isFile())) {
+            throw new IllegalArgumentException(
+                    "Destination should be either 'stdout' or a file."
+            );
+        }
     }
 
     public static void main(String[] args) {
         checkArgs(args);
+        System.out.println(args[0].split("=")[0]);
         ArgsName argsName = ArgsName.of(args);
         try {
             handle(argsName);
