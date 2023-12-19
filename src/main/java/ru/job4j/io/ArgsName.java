@@ -30,7 +30,7 @@ public class ArgsName {
         return names;
     }
 
-    public static void checkArgsValidity(String[] arguments) {
+    private static void checkArgsValidity(String[] arguments) {
         if (arguments.length < 1) {
             throw new IllegalArgumentException("Arguments not passed to program");
         }
