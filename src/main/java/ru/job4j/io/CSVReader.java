@@ -4,14 +4,10 @@ import java.io.*;
 import java.nio.file.Paths;
 import java.util.*;
 
-
-import static ru.job4j.io.ArgsName.checkArgsValidity;
-
 public class CSVReader {
     public static void handle(ArgsName argsName) throws IOException {
         List<Integer> filtersIndexes = new ArrayList<>();
-        try {
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(Paths.get(argsName.get("out")).toFile()));
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(Paths.get(argsName.get("out")).toFile()))) {
             var scanner = new Scanner(Paths.get(argsName.get("path"))).useDelimiter(System.lineSeparator());
             List<String> filters = Arrays.stream(argsName.get("filter").split(",")).toList();
             while (filtersIndexes.size() < filters.size()) {
@@ -34,16 +30,18 @@ public class CSVReader {
                 }
                 bufferedWriter.write(line.toString().replace(", ", argsName.get("delimiter")).replaceAll("^\\[|]$", ""));
                 bufferedWriter.newLine();
-
             }
-            bufferedWriter.close();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
 
+    private static void checkArgs(String[] args) {
+
+    }
+
     public static void main(String[] args) {
-        checkArgsValidity(args);
+        checkArgs(args);
         ArgsName argsName = ArgsName.of(args);
         try {
             handle(argsName);
