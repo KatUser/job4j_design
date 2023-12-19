@@ -35,31 +35,40 @@ public class CSVReader {
             ex.printStackTrace();
         }
     }
-
-    private static void checkArgs(String[] args) {
-        for (String arg : args) {
-            if (arg.endsWith("=")) {
-                throw new IllegalArgumentException(
-                        String.format("Error: This argument '%s' does not contain a value.", arg)
-                );
-            }
-        }
-        if (!"csv".equals(args[0].split("=")[1].split("\\.")[1])) {
+/* -path=file.csv -delimiter=;  -out=stdout -filter=name,age*/
+    private static void checkArgs(ArgsName argsName) {
+        if (!argsName.get("path").endsWith("csv")) {
             throw new IllegalArgumentException(
-                    "File with csv extension should be provided as a path."
+                    "Source should be a file with csv."
             );
         }
-        if (!("stdout".equals(args[2].split("=")[1]) || Paths.get(args[2].split("=")[1]).toFile().isFile())) {
+        if (!";".equals(argsName.get("delimiter"))) {
             throw new IllegalArgumentException(
-                    "Destination should be either 'stdout' or a file."
+                    "Delimiter should be a semicolon."
+            );
+        }
+        if (!("stdout".equals(argsName.get("out"))
+                    || Paths.get(argsName.get("out")).toFile().isFile())) {
+            throw new IllegalArgumentException(
+                    "Destination should be either a file or 'stdout'."
+            );
+        }
+        if (!("name".equals(argsName.get("filter").split(",")[0])
+                    || "age".equals(argsName.get("filter").split(",")[1]))) {
+            throw new IllegalArgumentException(
+                    "Filter should contain 'age' and 'name'."
             );
         }
     }
 
     public static void main(String[] args) {
-        checkArgs(args);
-        System.out.println(args[0].split("=")[0]);
+        if (args.length < 4) {
+            throw new IllegalArgumentException(
+                    String.format("4 arguments should be passed to the app, you passed %s", args.length)
+            );
+        }
         ArgsName argsName = ArgsName.of(args);
+        checkArgs(argsName);
         try {
             handle(argsName);
         } catch (IOException e) {
