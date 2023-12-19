@@ -7,8 +7,8 @@ import java.util.*;
 public class CSVReader {
     public static void handle(ArgsName argsName) throws IOException {
         List<Integer> filtersIndexes = new ArrayList<>();
-        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(Paths.get(argsName.get("out")).toFile()))) {
-            var scanner = new Scanner(Paths.get(argsName.get("path"))).useDelimiter(System.lineSeparator());
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(Paths.get(argsName.get("out")).toFile()));
+            var scanner = new Scanner(Paths.get(argsName.get("path"))).useDelimiter(System.lineSeparator())) {
             List<String> filters = Arrays.stream(argsName.get("filter").split(",")).toList();
             while (filtersIndexes.size() < filters.size()) {
                 List<String> line = new ArrayList<>();
