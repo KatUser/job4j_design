@@ -42,7 +42,8 @@ public class CSVReader {
                     "Source should be a file with csv extension."
             );
         }
-        if (!";".equals(argsName.get("delimiter"))) {
+        if (!(";".equals(argsName.get("delimiter"))
+                    || ",".equals(argsName.get("delimiter")))) {
             throw new IllegalArgumentException(
                     "Delimiter should be a semicolon."
             );
@@ -53,10 +54,9 @@ public class CSVReader {
                     "Destination should be either a file or 'stdout'."
             );
         }
-        if (!("name".equals(argsName.get("filter").split(",")[0])
-                    || "age".equals(argsName.get("filter").split(",")[1]))) {
+        if (argsName.get("filter").isEmpty()) {
             throw new IllegalArgumentException(
-                    "Filter should contain 'age' and 'name'."
+                    "Filter should not be empty."
             );
         }
     }
@@ -68,6 +68,7 @@ public class CSVReader {
             );
         }
         ArgsName argsName = ArgsName.of(args);
+        System.out.println(argsName.get("filter").isEmpty());
         checkArgs(argsName);
         try {
             handle(argsName);
