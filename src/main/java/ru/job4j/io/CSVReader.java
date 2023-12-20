@@ -68,7 +68,6 @@ public class CSVReader {
             );
         }
         ArgsName argsName = ArgsName.of(args);
-        System.out.println(argsName.get("filter").isEmpty());
         checkArgs(argsName);
         try {
             handle(argsName);
