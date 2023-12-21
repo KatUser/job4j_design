@@ -17,8 +17,7 @@ public class EchoServer {
                             && !str.isEmpty(); str = in.readLine()) {
                         if (str.contains("Bye")) {
                             System.out.println("The Server Is Terminating...");
-                            server.isClosed();
-                            return;
+                            server.close();
                         }
                         System.out.println(str);
                     }
