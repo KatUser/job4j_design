@@ -17,9 +17,9 @@ public class UsageLog4j {
         byte foodPortionsPerDay = 3;
         double foodPortionInGrams = 50.25855;
         float sleepHoursPerWeek = 140.999F;
-        LOG.debug("Animal info : "
-                + " animal type : {}, male or female : {} , has vaccine : {}, number of paws : {} "
-                + " weights : {} kg, has {} hair, should eat a {}g portion at least {} per day "
+        LOG.debug("Animal info :\n"
+                + " animal type : {}, male or female : {}, has vaccine : {}, number of paws : {},"
+                + " weights : {} kg, has {} hairs, should eat a {}g portion {} times a day"
                 + " and sleep {} hrs per week.", animal, gender, isVaccinated, paws, weightInKilos,
                 hairAmount, foodPortionInGrams, foodPortionsPerDay, sleepHoursPerWeek);
     }
