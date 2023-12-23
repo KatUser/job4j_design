@@ -17,13 +17,12 @@ public class EchoServer2 {
                     if (str.contains("msg=Exit")) {
                         out.write("The end.".getBytes());
                         server.close();
-                    }
-                    if (str.contains("msg=Hello")) {
-                        out.write("Hello, dear friend.".getBytes());
-                    }
-                    if (!(str.contains("msg=Exit")
-                                || str.contains("msg=Hello"))) {
-                        out.write("What.".getBytes());
+                    } else {
+                        if (str.contains("msg=Hello")) {
+                            out.write("Hello, dear friend.".getBytes());
+                        } else {
+                            out.write("What".getBytes());
+                        }
                     }
                     out.flush();
                 }
