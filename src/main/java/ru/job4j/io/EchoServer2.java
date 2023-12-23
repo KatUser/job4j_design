@@ -11,7 +11,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class EchoServer2 {
-    private static final Logger LOG = LoggerFactory.getLogger(UsageLog4j2.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(EchoServer2.class.getName());
     public static void main(String[] args) {
         try (ServerSocket server = new ServerSocket(9000)) {
             while (!server.isClosed()) {
