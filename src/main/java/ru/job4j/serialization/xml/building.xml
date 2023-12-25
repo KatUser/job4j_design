@@ -1,0 +1,10 @@
+<?xml version="1.1" encoding="UTF-8" ?>
+<building residential="false" height="100" underground_parking="true">
+    <address city="Berdsk" street="Berdskaya" building="3"/>
+    <companies>
+        <company>Pyaterochka</company>
+        <company>Company LLC</company>
+        <company>Roga &amp; kopita LLC</company>
+        <company>Pharmacy</company>
+    </companies>
+</building>
