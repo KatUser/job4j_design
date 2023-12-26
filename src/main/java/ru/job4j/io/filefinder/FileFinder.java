@@ -56,7 +56,7 @@ public class FileFinder extends SimpleFileVisitor<Path> {
     }
     /* -d=c:  -n=*.?xt -t=mask -o=log.txt*/
     private static void checkArgs(ArgsName argsName) {
-        if (argsName.get("d").isEmpty() || !Path.of(argsName.get("d")).toFile().isFile()) {
+        if (argsName.get("d").isEmpty() || !Path.of(argsName.get("d")).toFile().isDirectory()) {
             throw new IllegalArgumentException(
                     "Source should be a directory."
             );
