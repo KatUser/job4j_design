@@ -11,7 +11,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
-/* -d=c:  -n=*.?xt -t=mask -o=log.txt*/
+
 public class FileFinder extends SimpleFileVisitor<Path> {
     private static Path searchDirectory; /* директория, в которой начинать поиск.*/
     private static String match; /* имя файла, маска, либо регулярное выражение. */
@@ -54,28 +54,26 @@ public class FileFinder extends SimpleFileVisitor<Path> {
             condition = p -> pattern.matcher(p.getFileName().toString()).find();
         }
     }
-
+    /* -d=c:  -n=*.?xt -t=mask -o=log.txt*/
     private static void checkArgs(ArgsName argsName) {
-        if (!argsName.get("path").endsWith("csv")) {
+        if (argsName.get("d").isEmpty() || !Path.of(argsName.get("d")).toFile().isFile()) {
             throw new IllegalArgumentException(
-                    "Source should be a file with csv extension."
+                    "Source should be a directory."
             );
         }
-        if (!(";".equals(argsName.get("delimiter"))
-                || ",".equals(argsName.get("delimiter")))) {
+        if (argsName.get("n").isEmpty()) {
             throw new IllegalArgumentException(
-                    "Delimiter should be a semicolon."
+                    "Please specify match criteria : name, mask or regex."
             );
         }
-        if (!("stdout".equals(argsName.get("out"))
-                || Paths.get(argsName.get("out")).toFile().isFile())) {
+        if (argsName.get("t").isEmpty()) {
             throw new IllegalArgumentException(
-                    "Destination should be either a file or 'stdout'."
+                    "Please specify search criteria : name, mask or regex."
             );
         }
-        if (argsName.get("filter").isEmpty()) {
+        if (argsName.get("o").isEmpty()) {
             throw new IllegalArgumentException(
-                    "Filter should not be empty."
+                    "Destination should not be empty."
             );
         }
     }
