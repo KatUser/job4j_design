@@ -6,10 +6,7 @@ import ru.job4j.io.ArgsName;
 import java.io.FileFilter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.FileVisitResult;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.SimpleFileVisitor;
+import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
@@ -58,9 +55,40 @@ public class FileFinder extends SimpleFileVisitor<Path> {
         }
     }
 
+    private static void checkArgs(ArgsName argsName) {
+        if (!argsName.get("path").endsWith("csv")) {
+            throw new IllegalArgumentException(
+                    "Source should be a file with csv extension."
+            );
+        }
+        if (!(";".equals(argsName.get("delimiter"))
+                || ",".equals(argsName.get("delimiter")))) {
+            throw new IllegalArgumentException(
+                    "Delimiter should be a semicolon."
+            );
+        }
+        if (!("stdout".equals(argsName.get("out"))
+                || Paths.get(argsName.get("out")).toFile().isFile())) {
+            throw new IllegalArgumentException(
+                    "Destination should be either a file or 'stdout'."
+            );
+        }
+        if (argsName.get("filter").isEmpty()) {
+            throw new IllegalArgumentException(
+                    "Filter should not be empty."
+            );
+        }
+    }
+
 
     public static void main(String[] args) throws IOException {
+        if (args.length < 4) {
+            throw new IllegalArgumentException(
+                    String.format("4 arguments should be passed to the app, you passed %s", args.length)
+            );
+        }
         ArgsName argsName = ArgsName.of(args);
+        checkArgs(argsName);
         searchDirectory = Path.of(argsName.get("d"));
         match = argsName.get("n");
         searchType = argsName.get("t");
