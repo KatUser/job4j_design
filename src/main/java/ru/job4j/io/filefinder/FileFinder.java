@@ -23,29 +23,25 @@ public class FileFinder extends SimpleFileVisitor<Path> {
     private static Path destinationFile; /* результат записать в файл. */
     private static Predicate<Path> condition;
 
-
     @Override
     public FileVisitResult visitFile(Path file,
                                      BasicFileAttributes attributes) throws IOException {
         if (condition.test(file)) {
             logFile(file);
         }
-
         return super.visitFile(file, attributes);
     }
 
-    public static Path findFile(Path path) throws IOException {
+    public static void findFile(Path path) throws IOException {
         FileFinder fileFinder = new FileFinder();
         setCondition(match);
         Files.walkFileTree(searchDirectory, fileFinder);
-        return null;
     }
 
     public static void logFile(Path path) throws IOException {
         try (FileWriter fileWriter = new FileWriter(destinationFile.toFile(), true)) {
             fileWriter.append(path.toString()).append(System.lineSeparator());
         }
-
     }
 
     private static void setCondition(String match) {
@@ -58,9 +54,7 @@ public class FileFinder extends SimpleFileVisitor<Path> {
         }
         if ("regex".equals(searchType)) {
             Pattern pattern = Pattern.compile(match);
-            //Matcher matcher = pattern.matcher()
             condition = p -> pattern.matcher(p.getFileName().toString()).find();
-            //(f -> pattern.matcher(f).matches())
         }
     }
 
