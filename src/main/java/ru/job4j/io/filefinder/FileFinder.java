@@ -4,6 +4,7 @@ import org.apache.commons.io.filefilter.WildcardFileFilter;
 import ru.job4j.io.ArgsName;
 import ru.job4j.io.SearchFiles;
 
+import java.io.BufferedWriter;
 import java.io.FileFilter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -12,7 +13,6 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
-
 
 public class FileFinder {
     private static Path searchDirectory; /* директория, в которой начинать поиск.*/
@@ -26,12 +26,17 @@ public class FileFinder {
         SearchFiles searchFiles = new SearchFiles(condition);
         SearchFiles.search(destinationFile, condition);
         Files.walkFileTree(searchDirectory, searchFiles);
-        logFile(searchFiles.getPaths());
+        logFiles(searchFiles.getPaths());
     }
 
-    public static void logFile(List<Path> paths) throws IOException {
-        try (FileWriter fileWriter = new FileWriter(destinationFile.toFile(), true)) {
-            fileWriter.append(paths.toString()).append(System.lineSeparator());
+    public static void logFiles(List<Path> paths) {
+        try (BufferedWriter bufferedWriter
+                = new BufferedWriter(new FileWriter(destinationFile.toFile(), true))) {
+            for (Path p : paths) {
+                bufferedWriter.write(p.toString() + System.lineSeparator());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -49,7 +54,7 @@ public class FileFinder {
         }
         return condition;
     }
-    /* -d=c:  -n=*.?xt -t=mask -o=log.txt*/
+
     private static void checkArgs(ArgsName argsName) {
         if (argsName.get("d").isEmpty() || !Path.of(argsName.get("d")).toFile().isDirectory()) {
             throw new IllegalArgumentException(
@@ -86,7 +91,6 @@ public class FileFinder {
         match = argsName.get("n");
         searchType = argsName.get("t");
         destinationFile = Path.of(argsName.get("o"));
-
         findFile();
     }
 }
