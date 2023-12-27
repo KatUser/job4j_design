@@ -78,6 +78,13 @@ public class FileFinder {
         }
     }
 
+    private static void setSearchCriteria(ArgsName argsName) {
+        searchDirectory = Path.of(argsName.get("d"));
+        match = argsName.get("n");
+        searchType = argsName.get("t");
+        destinationFile = Path.of(argsName.get("o"));
+    }
+
 
     public static void main(String[] args) throws IOException {
         if (args.length < 4) {
@@ -87,10 +94,7 @@ public class FileFinder {
         }
         ArgsName argsName = ArgsName.of(args);
         checkArgs(argsName);
-        searchDirectory = Path.of(argsName.get("d"));
-        match = argsName.get("n");
-        searchType = argsName.get("t");
-        destinationFile = Path.of(argsName.get("o"));
+        setSearchCriteria(argsName);
         findFile();
     }
 }
