@@ -21,7 +21,7 @@ public class FileFinder {
     regex по регулярному выражению. */
     private static Path destinationFile; /* результат записать в файл. */
     private static Predicate<Path> condition;
-    public static void findFile() throws IOException {
+    public static void findFiles() throws IOException {
         condition = setCondition(match);
         SearchFiles searchFiles = new SearchFiles(condition);
         SearchFiles.search(destinationFile, condition);
@@ -95,6 +95,6 @@ public class FileFinder {
         ArgsName argsName = ArgsName.of(args);
         checkArgs(argsName);
         setSearchCriteria(argsName);
-        findFile();
+        findFiles();
     }
 }
