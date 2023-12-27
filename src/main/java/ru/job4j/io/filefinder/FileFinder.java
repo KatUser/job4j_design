@@ -56,24 +56,20 @@ public class FileFinder {
     }
 
     private static void checkArgs(ArgsName argsName) {
-        if (argsName.get("d").isEmpty() || !Path.of(argsName.get("d")).toFile().isDirectory()) {
+        if (!Path.of(argsName.get("d")).toFile().isDirectory()) {
             throw new IllegalArgumentException(
                     "Source should be a directory."
             );
         }
-        if (argsName.get("n").isEmpty()) {
+        if (!("mask".equals(argsName.get("t")) || "name".equals(argsName.get("t"))
+                || "regex".equals(argsName.get("t")))) {
             throw new IllegalArgumentException(
-                    "Please specify match criteria : name, mask or regex."
+                    "Please specify search pattern : name, mask or regex."
             );
         }
-        if (argsName.get("t").isEmpty()) {
+        if (!Path.of(argsName.get("o")).toFile().isFile()) {
             throw new IllegalArgumentException(
-                    "Please specify search criteria : name, mask or regex."
-            );
-        }
-        if (argsName.get("o").isEmpty()) {
-            throw new IllegalArgumentException(
-                    "Destination should not be empty."
+                    "Destination should be a file."
             );
         }
     }
