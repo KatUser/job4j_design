@@ -20,6 +20,10 @@ close cur_p;
 
 commit transaction;
 
+begin;
+declare
+cur_p scroll cursor for
+select * from products;
 --fetch
 fetch last from cur_p; -- на 20
 
