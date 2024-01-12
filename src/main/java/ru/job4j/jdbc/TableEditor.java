@@ -100,6 +100,10 @@ public class TableEditor implements AutoCloseable {
         return buffer.toString();
     }
 
+    public void printTableScheme(String tableName) throws Exception {
+        System.out.println(getTableScheme(tableName));
+    }
+
     @Override
     public void close() throws Exception {
         if (connection != null) {
@@ -110,13 +114,13 @@ public class TableEditor implements AutoCloseable {
     public static void main(String[] args) throws Exception {
         TableEditor tableEditor = new TableEditor(new Properties());
         tableEditor.createTable("demotable");
-        System.out.println(tableEditor.getTableScheme("demotable"));
+        tableEditor.printTableScheme("demotable");
         tableEditor.addColumn("demotable", "on_sale", "boolean");
-        System.out.println(tableEditor.getTableScheme("demotable"));
+        tableEditor.printTableScheme("demotable");
         tableEditor.renameColumn("demotable", "on_sale", "sale");
-        System.out.println(tableEditor.getTableScheme("demotable"));
+        tableEditor.printTableScheme("demotable");
         tableEditor.dropColumn("demotable", "sale");
-        System.out.println(tableEditor.getTableScheme("demotable"));
+        tableEditor.printTableScheme("demotable");
         tableEditor.dropTable("demotable");
     }
 }
