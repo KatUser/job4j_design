@@ -13,14 +13,14 @@ public class TableEditor implements AutoCloseable {
     private Connection connection;
     private Properties properties;
 
-    public TableEditor(Properties properties) {
+    public TableEditor(Properties properties) throws SQLException, IOException, ClassNotFoundException {
         this.properties = properties;
         initConnection();
     }
 
-    private void initConnection() {
-        try {
-            FileReader reader = new FileReader("C:\\projects\\job4j_design\\src\\main\\resources\\application.properties");
+    private void initConnection() throws ClassNotFoundException, SQLException, IOException {
+        try (FileReader reader = new FileReader(
+                "C:\\projects\\job4j_design\\src\\main\\resources\\application.properties")) {
             properties.load(reader);
             String drivers = properties.getProperty("driver");
             String connectionURL = properties.getProperty("url");
@@ -28,8 +28,6 @@ public class TableEditor implements AutoCloseable {
             String password = properties.getProperty("password");
             Class.forName(drivers);
             connection = DriverManager.getConnection(connectionURL, username, password);
-        } catch (IOException | ClassNotFoundException | SQLException e) {
-            throw new RuntimeException(e);
         }
     }
 
