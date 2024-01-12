@@ -37,8 +37,8 @@ public class TableEditor implements AutoCloseable {
         try (Statement statement = connection.createStatement()) {
             String sql = String.format(
                     "CREATE TABLE IF NOT EXISTS %s"
-                    + "(id SERIAL PRIMARY KEY,"
-                    + "name TEXT);", tableName
+                            + "(id SERIAL PRIMARY KEY,"
+                            + "name TEXT);", tableName
             );
             statement.execute(sql);
         }
@@ -111,15 +111,16 @@ public class TableEditor implements AutoCloseable {
     }
 
     public static void main(String[] args) throws Exception {
-        TableEditor tableEditor = new TableEditor(new Properties());
-        tableEditor.createTable("demotable");
-        tableEditor.printTableScheme("demotable");
-        tableEditor.addColumn("demotable", "on_sale", "boolean");
-        tableEditor.printTableScheme("demotable");
-        tableEditor.renameColumn("demotable", "on_sale", "sale");
-        tableEditor.printTableScheme("demotable");
-        tableEditor.dropColumn("demotable", "sale");
-        tableEditor.printTableScheme("demotable");
-        tableEditor.dropTable("demotable");
+        try (TableEditor tableEditor = new TableEditor(new Properties())) {
+            tableEditor.createTable("demotable");
+            tableEditor.printTableScheme("demotable");
+            tableEditor.addColumn("demotable", "on_sale", "boolean");
+            tableEditor.printTableScheme("demotable");
+            tableEditor.renameColumn("demotable", "on_sale", "sale");
+            tableEditor.printTableScheme("demotable");
+            tableEditor.dropColumn("demotable", "sale");
+            tableEditor.printTableScheme("demotable");
+            tableEditor.dropTable("demotable");
+        }
     }
 }
