@@ -28,7 +28,6 @@ public class TableEditor implements AutoCloseable {
             String password = properties.getProperty("password");
             Class.forName(drivers);
             connection = DriverManager.getConnection(connectionURL, username, password);
-            System.out.println("Connection Successful");
         } catch (IOException | ClassNotFoundException | SQLException e) {
             throw new RuntimeException(e);
         }
