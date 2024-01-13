@@ -70,16 +70,8 @@ public class ImportDB {
         Properties config = new Properties();
         try (FileReader in = new FileReader("C:\\projects\\job4j_design\\src\\main\\java\\ru\\job4j\\spammer\\app.properties")) {
             config.load(in);
-//            String drivers = config.getProperty("jdbc.driver");
-//            String connectionURL = config.getProperty("jdbc.url");
-//            String username = config.getProperty("jdbc.username");
-//            String password = config.getProperty("jdbc.password");
-//            Class.forName(drivers);
-//            connection = DriverManager.getConnection(connectionURL, username, password);
         }
         ImportDB dataBase = new ImportDB(config, "C:\\projects\\job4j_design\\src\\main\\java\\ru\\job4j\\spammer\\dump.txt");
-        //dataBase.createDB("spammer");
-       // dataBase.createTable("users");
         dataBase.save(dataBase.load());
     }
 }
