@@ -3,7 +3,6 @@ package ru.job4j.spammer;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +11,6 @@ import java.util.Properties;
 public class ImportDB {
     private Properties config;
     private String dump;
-    Connection connection;
 
     public ImportDB(Properties config, String dump) {
         this.config = config;
@@ -20,18 +18,7 @@ public class ImportDB {
     }
 
     public void createDB(String dbName) throws Exception {
-        try (Statement statement = connection.createStatement()) {
-            String sql = String.format("CREATE %s", dbName);
-            statement.execute(sql);
-        }
-    }
 
-    public void createTable(String tableName) throws Exception {
-        try (PreparedStatement statement = connection.prepareStatement(
-                "CREATE TABLE ? IF NOT EXISTS"
-        )) {
-            statement.execute();
-        }
     }
 
     public List<User> load() throws IOException {
@@ -50,9 +37,17 @@ public class ImportDB {
                 config.getProperty("jdbc.username"),
                 config.getProperty("jdbc.password")
         )) {
+            try (Statement statement = connection.createStatement()) {
+                String sql = "CREATE TABLE IF NOT EXISTS users"
+                        + "(name TEXT,"
+                        + "email TEXT);";
+                statement.execute(sql);
+            }
+
             for (User user : users) {
                 try (PreparedStatement preparedStatement =
-                             connection.prepareStatement("INSERT INTO ... ")) {
+                             connection.prepareStatement("INSERT INTO "
+                                     + "users (name, email) VALUES (?, ?)")) {
                     preparedStatement.setString(1, user.name);
                     preparedStatement.setString(2, user.email);
                     preparedStatement.execute();
@@ -73,13 +68,18 @@ public class ImportDB {
 
     public static void main(String[] args) throws Exception {
         Properties config = new Properties();
-        try (InputStream input = ImportDB.class.getClassLoader()
-                .getResourceAsStream("app.properties")) {
-            config.load(input);
+        try (FileReader in = new FileReader("C:\\projects\\job4j_design\\src\\main\\java\\ru\\job4j\\spammer\\app.properties")) {
+            config.load(in);
+//            String drivers = config.getProperty("jdbc.driver");
+//            String connectionURL = config.getProperty("jdbc.url");
+//            String username = config.getProperty("jdbc.username");
+//            String password = config.getProperty("jdbc.password");
+//            Class.forName(drivers);
+//            connection = DriverManager.getConnection(connectionURL, username, password);
         }
-        ImportDB dataBase = new ImportDB(config, "./dump.txt");
-        dataBase.createDB("spammer");
-        dataBase.createTable("users");
+        ImportDB dataBase = new ImportDB(config, "C:\\projects\\job4j_design\\src\\main\\java\\ru\\job4j\\spammer\\dump.txt");
+        //dataBase.createDB("spammer");
+       // dataBase.createTable("users");
         dataBase.save(dataBase.load());
     }
 }
