@@ -22,15 +22,16 @@ public class ImportDB {
         try (BufferedReader reader = new BufferedReader(new FileReader(dump))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.split(";").length < 2
-                    || "".equals(line.split(";")[0])
-                    || "".equals(line.split(";")[1])) {
+                String[] splitLine = line.split(";");
+                if (splitLine.length < 2
+                    || splitLine[0].isBlank()
+                    || splitLine[1].isBlank()) {
                     throw new IllegalArgumentException(
                            String.format("Must be 2 arguments, you passed %d",
-                                   line.split(";").length)
+                                   splitLine.length)
                     );
                 }
-                users.add(new User(line.split(";")[0], line.split(";")[1]));
+                users.add(new User(splitLine[0], splitLine[1]));
             }
         }
         return users;
