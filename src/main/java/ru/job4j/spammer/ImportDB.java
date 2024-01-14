@@ -17,15 +17,21 @@ public class ImportDB {
         this.dump = dump;
     }
 
-    public void createDB(String dbName) throws Exception {
-
-    }
-
     public List<User> load() throws IOException {
         List<User> users = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(dump))) {
-            reader.lines().forEach(s ->
-                    users.add(new User(s.split(";")[0], s.split(";")[1])));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.split(";").length < 2
+                    || "".equals(line.split(";")[0])
+                    || "".equals(line.split(";")[1])) {
+                    throw new IllegalArgumentException(
+                           String.format("Must be 2 arguments, you passed %d",
+                                   line.split(";").length)
+                    );
+                }
+                users.add(new User(line.split(";")[0], line.split(";")[1]));
+            }
         }
         return users;
     }
@@ -38,12 +44,10 @@ public class ImportDB {
                 config.getProperty("jdbc.password")
         )) {
             try (Statement statement = connection.createStatement()) {
-                String sql = "CREATE TABLE IF NOT EXISTS users"
+                statement.execute("CREATE TABLE IF NOT EXISTS users"
                         + "(name TEXT,"
-                        + "email TEXT);";
-                statement.execute(sql);
+                        + "email TEXT);");
             }
-
             for (User user : users) {
                 try (PreparedStatement preparedStatement =
                              connection.prepareStatement("INSERT INTO "
